@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/site/site-header";
+import { SiteFooter } from "@/components/site/site-footer";
 import { OptimizeFlow } from "@/components/flow/optimize-flow";
 import { getPublicConfig } from "@/lib/config";
 
@@ -19,6 +20,7 @@ export default function OptimizePage() {
       <main className="flex-1 overflow-x-clip">
         <OptimizeFlow config={config} />
       </main>
+      <SiteFooter />
     </>
   );
 }

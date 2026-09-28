@@ -1,43 +1,42 @@
 import type { Metadata, Viewport } from "next";
-import { Geist_Mono, Instrument_Serif, Inter } from "next/font/google";
+import { Cormorant_Garamond, Figtree } from "next/font/google";
 import { Toaster } from "sonner";
 import { AmbientBackground } from "@/components/site/ambient";
 import "./globals.css";
 
-const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
-  weight: "400",
-  style: ["normal", "italic"],
+const figtree = Figtree({ variable: "--font-figtree", subsets: ["latin"], weight: ["400", "500", "600"] });
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
 });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    default: "Feng Shui AI — See your room, rearranged",
+    default: "Feng Shui AI — Your room, at ease",
     template: "%s · Feng Shui AI",
   },
   description:
-    "Upload a photo of your room. Feng Shui AI analyzes the space and shows you how to improve its flow, balance, and energy — in a photorealistic render of your own room.",
+    "Upload a photo of your room. Feng Shui AI reads the space and shows it calmly rearranged — the same room, with better flow, balance and light, and every change explained.",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f3f0e7",
+  themeColor: "#f4f1ea",
   width: "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${inter.variable} ${instrumentSerif.variable} ${geistMono.variable} h-full`}>
+    <html lang="en" className={`${figtree.variable} ${cormorant.variable} h-full`}>
       <body className="relative flex min-h-full flex-col">
         <AmbientBackground />
         {children}
         <Toaster
           position="bottom-center"
           toastOptions={{
-            className: "!rounded-xl !border-border !bg-surface !text-foreground !shadow-md !font-sans",
+            className: "!rounded-full !border-border !bg-surface !px-5 !text-foreground !shadow-lg !font-sans",
           }}
         />
       </body>

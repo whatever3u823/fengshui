@@ -34,7 +34,7 @@ function RatingMeter({ rating }: { rating: AlignmentRating }) {
 
 export function RatingBadge({ rating }: { rating: AlignmentRating }) {
   return (
-    <Badge variant={RATING_VARIANT[rating]} className="shrink-0 gap-1.5 px-2.5 py-1" title={RATING_EXPLAINERS[rating]}>
+    <Badge variant={RATING_VARIANT[rating]} className="shrink-0 gap-2 px-3 py-1.5" title={RATING_EXPLAINERS[rating]}>
       <RatingMeter rating={rating} />
       {ALIGNMENT_RATING_LABELS[rating]}
     </Badge>
@@ -43,57 +43,67 @@ export function RatingBadge({ rating }: { rating: AlignmentRating }) {
 
 function RatingLegend() {
   return (
-    <ul className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-muted-foreground" aria-label="What the ratings mean">
+    <ul className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-muted-foreground" aria-label="What the ratings mean">
       {(["strong", "moderate", "opportunity"] as const).map((r) => (
-        <li key={r} className="flex items-center gap-2">
-          <RatingBadge rating={r} />
-          <span>{RATING_EXPLAINERS[r]}</span>
+        <li key={r} className="flex items-center gap-2.5">
+          <RatingMeter rating={r} />
+          <span>
+            <span className="font-medium text-foreground">{ALIGNMENT_RATING_LABELS[r]}</span> · {RATING_EXPLAINERS[r]}
+          </span>
         </li>
       ))}
     </ul>
   );
 }
 
-export function AlignmentPanel({ alignment, showProjected = true }: { alignment: RoomAnalysis["alignment"]; showProjected?: boolean }) {
+export function AlignmentPanel({
+  alignment,
+  showProjected = true,
+  className,
+}: {
+  alignment: RoomAnalysis["alignment"];
+  showProjected?: boolean;
+  className?: string;
+}) {
   return (
-    <div className="space-y-6">
+    <div className={className}>
       <RatingLegend />
-      <ul className="divide-y divide-border rounded-2xl border border-border/80 bg-surface/70 px-5 backdrop-blur-sm sm:px-6">
+      <ul className="mt-10 border-b border-border">
         {ALIGNMENT_CATEGORIES.map((key) => {
           const entry = alignment[key];
           const explainer = ALIGNMENT_EXPLAINERS[key];
           return (
             <li
               key={key}
-              className="grid gap-3 py-5 md:grid-cols-[minmax(0,15rem)_minmax(0,18.5rem)_minmax(0,1fr)] md:items-start md:gap-6"
+              className="reveal grid gap-4 border-t border-border py-7 md:grid-cols-[minmax(0,15rem)_minmax(0,19.5rem)_minmax(0,1fr)] md:items-start md:gap-8"
             >
               <div>
-                <p className="font-display text-[1.45rem] leading-tight">{ALIGNMENT_LABELS[key]}</p>
-                <p className="mt-1 text-[13px] leading-snug text-muted-foreground">{explainer.question}</p>
-                <p className="mt-1.5 text-xs text-subtle-foreground">
+                <p className="font-display text-[1.6rem] font-medium leading-tight">{ALIGNMENT_LABELS[key]}</p>
+                <p className="mt-1.5 text-sm leading-snug text-muted-foreground">{explainer.question}</p>
+                <p className="mt-2 text-sm text-subtle-foreground">
                   Feng Shui idea: <Term id={explainer.term}>{GLOSSARY[explainer.term].term}</Term>
                 </p>
               </div>
-              <div className="flex flex-wrap items-center gap-2 md:flex-nowrap md:pt-1">
+              <div className="flex flex-wrap items-center gap-2 md:flex-nowrap md:pt-1.5">
                 <span className="sr-only">As photographed:</span>
                 <RatingBadge rating={entry.current} />
                 {showProjected && entry.projected !== entry.current && (
                   <>
-                    <ArrowRight className="size-3.5 shrink-0 text-subtle-foreground" aria-hidden />
+                    <ArrowRight className="size-3.5 shrink-0 text-subtle-foreground" strokeWidth={1.5} aria-hidden />
                     <span className="sr-only">After the changes:</span>
                     <RatingBadge rating={entry.projected} />
                   </>
                 )}
               </div>
-              <p className="text-sm leading-relaxed text-foreground/80 md:pt-1">
+              <p className="text-[15px] leading-relaxed text-foreground/80 md:pt-1">
                 <GlossaryText text={entry.note} skip={[explainer.term]} />
               </p>
             </li>
           );
         })}
       </ul>
-      <p className="text-xs leading-relaxed text-subtle-foreground">
-        {showProjected ? "Left: the room as photographed. Right: with the suggested changes. " : ""}
+      <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-subtle-foreground">
+        {showProjected ? "Where a rating changes, the second shows the room with the suggested changes. " : ""}
         This assessment is an AI interpretation of traditional Feng Shui principles, not a scientific measurement.
       </p>
     </div>

@@ -50,15 +50,12 @@ export interface DetailsValue {
   fengShuiMode: FengShuiMode;
 }
 
-function Question({ n, title, hint, children }: { n: string; title: string; hint?: string; children: React.ReactNode }) {
+function Question({ title, hint, children, first }: { title: string; hint?: string; children: React.ReactNode; first?: boolean }) {
   return (
-    <fieldset className="border-t border-border pt-6">
+    <fieldset className={first ? undefined : "border-t border-border pt-8"}>
       <legend className="sr-only">{title}</legend>
-      <div className="mb-4">
-        <h2 className="flex items-baseline gap-2.5 text-[17px] font-semibold tracking-tight">
-          <span className="font-mono text-xs font-normal text-subtle-foreground">{n}</span>
-          {title}
-        </h2>
+      <div className="mb-5">
+        <h2 className="font-display text-[1.6rem] font-medium leading-tight">{title}</h2>
         {hint && <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{hint}</p>}
       </div>
       {children}
@@ -85,36 +82,36 @@ export function DetailsStep({
   const ready = value.roomType !== null;
 
   return (
-    <div className="pb-24 lg:pb-0">
-      <header className="max-w-2xl">
-        <h1 className="font-display text-4xl leading-tight sm:text-5xl">Tell us about the room</h1>
-        <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
-          Only the room type is required. Your priorities shape which changes we suggest.
+    <div>
+      <header className="mx-auto max-w-2xl text-center">
+        <h1 className="font-display-light text-[2.75rem] leading-[1.05] sm:text-[3.5rem]">Tell us about the room</h1>
+        <p className="mx-auto mt-4 max-w-lg text-[17px] leading-relaxed text-muted-foreground">
+          Three short questions. Only the first is required.
         </p>
       </header>
 
-      {/* Photo and questions share a top edge: the first divider lines up with the photo. */}
-      <div className="mt-8 grid gap-10 lg:grid-cols-12 lg:gap-14">
+      {/* Photo and first question share a top edge. */}
+      <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:gap-16">
       <div className="lg:col-span-5">
         <div className="lg:sticky lg:top-24">
-          <figure className="relative overflow-hidden rounded-[22px] bg-muted shadow-[0_30px_80px_-40px_rgba(31,58,45,0.45)]" style={{ aspectRatio: `${photo.width} / ${photo.height}` }}>
+          <figure className="relative overflow-hidden rounded-[1.75rem] bg-muted shadow-[0_40px_100px_-50px_rgba(34,56,44,0.5)]" style={{ aspectRatio: `${photo.width} / ${photo.height}` }}>
             {/* eslint-disable-next-line @next/next/no-img-element -- local object URL preview */}
             <img src={photo.previewUrl} alt="Your uploaded room" className="absolute inset-0 size-full object-cover" />
             <button
               type="button"
               onClick={onRemovePhoto}
-              className="absolute right-2.5 top-2.5 flex size-8 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-colors hover:bg-black/70"
+              className="absolute right-3 top-3 flex size-9 items-center justify-center rounded-full bg-black/35 text-white backdrop-blur-md transition-colors duration-300 hover:bg-black/55"
               aria-label="Remove photo"
             >
               <X className="size-4" />
             </button>
           </figure>
-          <div className="mt-3 flex items-center justify-between gap-3 text-xs text-muted-foreground">
+          <div className="mt-4 flex items-center justify-between gap-3 px-1 text-sm text-muted-foreground">
             <span className="truncate">
               {photo.isSample ? "Sample bedroom" : photo.file.name} · {photo.width}×{photo.height} · {formatBytes(photo.file.size)}
             </span>
-            <button type="button" onClick={() => replaceRef.current?.click()} className="-my-2 -mr-2 flex shrink-0 items-center gap-1 rounded-full px-2 py-2 font-medium text-foreground hover:underline">
-              <RefreshCw className="size-3" /> Replace
+            <button type="button" onClick={() => replaceRef.current?.click()} className="-my-2 -mr-2 flex shrink-0 items-center gap-1.5 rounded-full px-2 py-2 font-medium text-foreground underline-offset-4 hover:underline">
+              <RefreshCw className="size-3.5" strokeWidth={1.75} /> Replace
             </button>
             <input
               ref={replaceRef}
@@ -133,13 +130,13 @@ export function DetailsStep({
       </div>
 
       <form
-        className="space-y-10 lg:col-span-7"
+        className="space-y-8 lg:col-span-7"
         onSubmit={(e) => {
           e.preventDefault();
           if (ready) onSubmit();
         }}
       >
-        <Question n="01" title="What type of room is this?">
+        <Question first title="What type of room is this?">
           <ToggleGroup
             type="single"
             value={value.roomType ?? ""}
@@ -151,17 +148,17 @@ export function DetailsStep({
               const Icon = ROOM_ICONS[type];
               return (
                 <ToggleGroupItem key={type} value={type} className="justify-start">
-                  <Icon strokeWidth={1.6} /> {ROOM_TYPE_LABELS[type]}
+                  <Icon strokeWidth={1.5} /> {ROOM_TYPE_LABELS[type]}
                 </ToggleGroupItem>
               );
             })}
             <ToggleGroupItem value="auto" className="col-span-2 justify-start sm:col-span-1">
-              <WandSparkles strokeWidth={1.6} /> Auto-detect
+              <WandSparkles strokeWidth={1.5} /> Auto-detect
             </ToggleGroupItem>
           </ToggleGroup>
         </Question>
 
-        <Question n="02" title="What matters most to you?" hint="Optional — choose any.">
+        <Question title="What matters most to you?" hint="Optional. Choose as many as you like.">
           <ToggleGroup
             type="multiple"
             value={value.priorities}
@@ -177,9 +174,8 @@ export function DetailsStep({
         </Question>
 
         <Question
-          n="03"
           title="Feng Shui approach"
-          hint="Feng Shui is a traditional spatial-design philosophy. Choose how literally to apply it — Traditional is the default."
+          hint="How closely to follow the classical rules."
         >
           <ToggleGroup
             type="single"
@@ -193,18 +189,18 @@ export function DetailsStep({
                 key={mode}
                 value={mode}
                 className={cn(
-                  "h-full flex-col items-start gap-1.5 whitespace-normal px-4 py-3.5 text-left",
+                  "h-full flex-col items-start gap-1.5 whitespace-normal px-5 py-4 text-left",
                   "data-[state=on]:[&_.desc]:text-primary-foreground/70",
                 )}
               >
-                <span className="text-sm font-medium">{FENG_SHUI_MODE_LABELS[mode].label}</span>
-                <span className="desc text-xs leading-relaxed text-muted-foreground">{FENG_SHUI_MODE_LABELS[mode].description}</span>
+                <span className="text-[15px] font-medium">{FENG_SHUI_MODE_LABELS[mode].label}</span>
+                <span className="desc text-[13px] leading-relaxed text-muted-foreground">{FENG_SHUI_MODE_LABELS[mode].description}</span>
               </ToggleGroupItem>
             ))}
           </ToggleGroup>
         </Question>
 
-        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/92 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-md lg:static lg:border-0 lg:bg-transparent lg:p-0 lg:backdrop-blur-none">
+        <div data-action-bar="lg" className="fixed inset-x-0 bottom-0 z-30 border-t border-border/70 bg-background/92 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl lg:static lg:border-0 lg:bg-transparent lg:p-0 lg:pt-2 lg:backdrop-blur-none">
           <Button type="submit" size="lg" disabled={!ready} className="w-full lg:w-auto">
             {ready ? "Analyze My Room" : "Choose a room type to continue"} {ready && <ArrowRight />}
           </Button>

@@ -2,16 +2,18 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ArrowRight, Columns2, Download, LoaderCircle, RefreshCw, RotateCcw, Share2, SplitSquareHorizontal } from "lucide-react";
+import { ArrowRight, Download, LoaderCircle, RefreshCw, Share2 } from "lucide-react";
 import { toast } from "sonner";
 import { BeforeAfterSlider } from "@/components/compare/before-after-slider";
 import { ChangeCards } from "@/components/results/change-cards";
 import { AlignmentPanel } from "@/components/results/alignment-panel";
 import { IssuesList, ObservedDetails } from "@/components/results/observations";
 import { FeelingContrast } from "@/components/results/feeling-contrast";
+import { SectionHeader } from "@/components/site/section-header";
 import { PrinciplesGrid } from "@/components/learn/principles";
 import { GlossaryText } from "@/components/learn/term";
 import { Button } from "@/components/ui/button";
+import { Disclosure } from "@/components/ui/disclosure";
 import { FENG_SHUI_MODE_LABELS, ROOM_TYPE_LABELS, type FengShuiMode } from "@/lib/domain/options";
 import type { RoomAnalysis } from "@/lib/ai/schema";
 import type { AnalysisMeta, GenerationMeta, StoredImage } from "@/lib/domain/types";
@@ -39,19 +41,22 @@ interface ResultsViewProps {
   onStartOver?: () => void;
 }
 
-function Section({ id, eyebrow, title, intro, children, aside }: { id?: string; eyebrow?: string; title: string; intro?: string; children: React.ReactNode; aside?: React.ReactNode }) {
+const VIEWS = [
+  { id: "slider", label: "Slider" },
+  { id: "split", label: "Side by side" },
+] as const;
+
+function Photo({ img, alt, label, dim }: { img: StoredImage; alt: string; label?: string; dim?: boolean }) {
   return (
-    <section id={id} className="scroll-mt-24 pt-4 sm:pt-6">
-      <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          {eyebrow && <p className="eyebrow mb-2">{eyebrow}</p>}
-          <h2 className="font-display text-4xl sm:text-5xl">{title}</h2>
-          {intro && <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">{intro}</p>}
-        </div>
-        {aside}
-      </div>
-      {children}
-    </section>
+    <figure className="relative overflow-hidden rounded-[1.5rem] bg-muted" style={{ aspectRatio: `${img.width} / ${img.height}` }}>
+      {/* eslint-disable-next-line @next/next/no-img-element -- data URL */}
+      <img src={img.src} alt={alt} className={cn("absolute inset-0 size-full object-cover transition-opacity duration-700", dim && "opacity-55")} />
+      {label && (
+        <figcaption className="absolute left-3 top-3 rounded-full bg-black/35 px-3 py-1 text-xs font-medium text-white backdrop-blur-md">
+          {label}
+        </figcaption>
+      )}
+    </figure>
   );
 }
 
@@ -109,211 +114,199 @@ export function ResultsView({
     }
   };
 
-  // Ghost button text is pulled flush with the content edge on desktop (-mr-5 offsets px-5).
   const startOver = onStartOver ? (
-    <Button variant="ghost" onClick={onStartOver} className="-ml-5 md:ml-0 md:-mr-5">
-      <RotateCcw /> Start Another Room
+    <Button variant="link" onClick={onStartOver} className="text-[15px]">
+      Start Another Room
     </Button>
   ) : (
-    <Button variant="outline" asChild>
+    <Button variant="link" asChild className="text-[15px]">
       <Link href="/optimize">
         Optimize My Room <ArrowRight />
       </Link>
     </Button>
   );
 
+  const projected = optimized !== null;
+
   return (
-    <div className="animate-fade-up space-y-12 pb-28 sm:space-y-20 md:pb-10">
-      <div className="space-y-6 sm:space-y-8">
-      <header className="max-w-3xl">
-        <p className="eyebrow mb-3">
+    <div className="animate-fade-in">
+      {/* The result */}
+      <header className="mx-auto max-w-3xl text-center">
+        <p className="kicker text-primary">
           {roomLabel} · {FENG_SHUI_MODE_LABELS[fengShuiMode].label}
         </p>
-        <h1 className="font-display text-[2.6rem] leading-[1.05] sm:text-6xl">
+        <h1 className="mt-3 font-display-light text-[2.75rem] leading-[1.02] sm:text-[4rem] lg:text-[4.5rem]">
           {context === "example" ? "A Feng Shui Transformation" : "Your Feng Shui Transformation"}
         </h1>
-        <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-muted-foreground">
+        <p className="mx-auto mt-6 max-w-xl text-[17px] leading-relaxed text-muted-foreground">
           <GlossaryText text={analysis.overallAssessment} />
         </p>
       </header>
 
-      {notice}
+      {notice && <div className="mt-8 flex justify-center">{notice}</div>}
 
-      <div className="space-y-4">
-        <div className="flex items-center justify-between gap-3">
-          <p className="text-sm text-muted-foreground">
-            {optimized ? (view === "slider" ? "Drag to compare" : "Original and optimized") : "Your photo"}
-          </p>
-          {optimized && (
-            <div className="flex rounded-full border border-border bg-surface/70 p-0.5" role="group" aria-label="Comparison view">
-              <button
-                type="button"
-                onClick={() => setView("slider")}
-                aria-pressed={view === "slider"}
-                className={cn("flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium transition-colors sm:py-1.5", view === "slider" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}
-              >
-                <SplitSquareHorizontal className="size-3.5" /> Slider
-              </button>
-              <button
-                type="button"
-                onClick={() => setView("split")}
-                aria-pressed={view === "split"}
-                className={cn("flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium transition-colors sm:py-1.5", view === "split" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}
-              >
-                <Columns2 className="size-3.5" /> Side by side
-              </button>
+      <div className="mt-12 sm:mt-14">
+        {optimized && (
+          <div className="mb-5 flex justify-center">
+            <div className="flex rounded-full bg-muted/80 p-1" role="group" aria-label="Comparison view">
+              {VIEWS.map((v) => (
+                <button
+                  key={v.id}
+                  type="button"
+                  onClick={() => setView(v.id)}
+                  aria-pressed={view === v.id}
+                  className={cn(
+                    "min-h-9 rounded-full px-4 text-sm transition-[background-color,color,box-shadow] duration-300 ease-calm",
+                    view === v.id ? "bg-surface text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  {v.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="rounded-[2rem] border border-white/70 bg-surface/50 p-2 shadow-[0_40px_100px_-50px_rgba(34,56,44,0.5)] backdrop-blur-sm sm:p-3">
+          {optimized ? (
+            view === "slider" ? (
+              <BeforeAfterSlider
+                beforeSrc={original.src}
+                afterSrc={optimized.src}
+                width={original.width}
+                height={original.height}
+                beforeAlt={`Original ${roomLabel.toLowerCase()} photo`}
+                afterAlt={`${roomLabel} rearranged following Feng Shui recommendations`}
+                className="rounded-[1.5rem]"
+                priority
+              />
+            ) : (
+              <div className="grid gap-2 sm:gap-3 md:grid-cols-2">
+                <Photo img={original} alt={`Original ${roomLabel.toLowerCase()} photo`} label="Before" />
+                <Photo img={optimized} alt={`${roomLabel} rearranged following Feng Shui recommendations`} label="After" />
+              </div>
+            )
+          ) : (
+            <div className="relative">
+              <Photo img={original} alt={`Original ${roomLabel.toLowerCase()} photo`} dim={renderState.status === "rendering"} />
+              {renderState.status === "rendering" && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="flex items-center gap-2.5 rounded-full bg-surface/90 px-5 py-2.5 text-sm shadow-sm backdrop-blur">
+                    <LoaderCircle className="size-4 animate-spin text-primary" /> Rendering your optimized room…
+                  </span>
+                </div>
+              )}
             </div>
           )}
         </div>
 
-        <div>
-        <div className="relative rounded-[26px] border border-white/60 bg-gradient-to-br from-sage-soft/80 via-surface/50 to-mist/80 p-2 shadow-[0_30px_80px_-40px_rgba(31,58,45,0.45)] sm:p-3">
-        {optimized ? (
-          view === "slider" ? (
-            <BeforeAfterSlider
-              beforeSrc={original.src}
-              afterSrc={optimized.src}
-              width={original.width}
-              height={original.height}
-              beforeAlt={`Original ${roomLabel.toLowerCase()} photo`}
-              afterAlt={`${roomLabel} rearranged following Feng Shui recommendations`}
-              className="rounded-[18px]"
-              priority
-            />
-          ) : (
-            <div className="grid gap-3 md:grid-cols-2">
-              {[
-                { img: original, label: "Original" },
-                { img: optimized, label: "Feng Shui Optimized" },
-              ].map(({ img, label }) => (
-                <figure key={label} className="relative overflow-hidden rounded-[18px] bg-muted" style={{ aspectRatio: `${img.width} / ${img.height}` }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element -- data URL */}
-                  <img src={img.src} alt={label} className="absolute inset-0 size-full object-cover" />
-                  <figcaption className="absolute left-3 top-3 rounded-sm bg-black/45 px-2 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
-                    {label}
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
-          )
-        ) : (
-          <figure className="relative overflow-hidden rounded-[18px] bg-muted" style={{ aspectRatio: `${original.width} / ${original.height}` }}>
-            {/* eslint-disable-next-line @next/next/no-img-element -- data URL */}
-            <img src={original.src} alt={`Original ${roomLabel.toLowerCase()} photo`} className={cn("absolute inset-0 size-full object-cover", renderState.status === "rendering" && "opacity-60")} />
-            {renderState.status === "rendering" && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="flex items-center gap-2 rounded-full bg-background/90 px-4 py-2.5 text-sm shadow-sm backdrop-blur">
-                  <LoaderCircle className="size-4 animate-spin" /> Rendering your optimized room…
-                </span>
-              </div>
-            )}
-          </figure>
-        )}
-
-        </div>
-        </div>
-
         {renderState.status === "failed" && (
-          <div className="flex flex-col gap-3 rounded-xl border border-opportunity/30 bg-opportunity-soft/60 p-4 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-sm text-foreground/85">{renderState.error.message}</p>
+          <div className="mx-auto mt-6 flex max-w-2xl flex-col items-center gap-4 text-center">
+            <p className="text-[15px] leading-relaxed text-muted-foreground">{renderState.error.message}</p>
             {renderState.error.retryable && onRetryRender && (
-              <Button variant="outline" size="sm" onClick={onRetryRender}>
+              <Button variant="outline" onClick={onRetryRender}>
                 <RefreshCw /> Try rendering again
               </Button>
             )}
           </div>
         )}
         {renderState.status === "unavailable" && (
-          <p className="rounded-xl border border-border bg-surface/70 p-4 text-sm text-muted-foreground">{renderState.message}</p>
+          <p className="mx-auto mt-6 max-w-2xl text-center text-[15px] leading-relaxed text-muted-foreground">{renderState.message}</p>
         )}
 
-        <div className="fixed inset-x-0 bottom-0 z-30 flex gap-2 border-t border-border bg-background/92 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-md md:static md:z-auto md:border-0 md:bg-transparent md:p-0 md:backdrop-blur-none">
+        {/* Actions: centered beneath the image on larger screens, a quiet bar within thumb's reach on phones. */}
+        <div data-action-bar="md" className="fixed inset-x-0 bottom-0 z-30 flex gap-2 border-t border-border/70 bg-background/92 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl md:static md:z-auto md:mt-8 md:justify-center md:gap-3 md:border-0 md:bg-transparent md:p-0 md:backdrop-blur-none">
           <Button onClick={handleDownload} disabled={!optimized || busy !== null} className="flex-1 md:flex-none">
             {busy === "download" ? <LoaderCircle className="animate-spin" /> : <Download />} Download Image
           </Button>
           <Button variant="outline" onClick={handleShare} disabled={!optimized || busy !== null} className="flex-1 md:flex-none">
             {busy === "share" ? <LoaderCircle className="animate-spin" /> : <Share2 />} Share
           </Button>
-          <div className="hidden md:ml-auto md:block">{startOver}</div>
+          <div className="hidden md:ml-4 md:flex">{startOver}</div>
         </div>
       </div>
-      </div>
 
-      <FeelingContrast contrast={analysis.contrast} projected={optimized !== null} />
+      {/* How it feels */}
+      <section className="pt-24 sm:pt-32" aria-labelledby="feel-title">
+        <SectionHeader id="feel-title" kicker="The difference" title="How the Room Feels">
+          What weighed on the room, and what each change gives back.
+        </SectionHeader>
+        <FeelingContrast contrast={analysis.contrast} projected={projected} className="mt-12 sm:mt-16" />
+      </section>
 
-      <details className="group rounded-2xl border border-border/80 bg-mist/50 backdrop-blur-sm">
-        <summary className="flex cursor-pointer list-none flex-col gap-1 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <span>
-            <span className="font-display text-2xl">New to Feng Shui?</span>
-            <span className="mt-0.5 block text-sm text-muted-foreground">
-              The five ideas behind these suggestions, in plain words. Underlined terms anywhere on this page can also be
-              tapped for a quick definition.
-            </span>
-          </span>
-          <span className="mt-2 inline-flex items-center gap-2 text-sm font-medium text-primary sm:mt-0">
-            <span className="group-open:hidden">Show the basics</span>
-            <span className="hidden group-open:inline">Hide</span>
-            <span className="text-lg leading-none transition-transform group-open:rotate-45" aria-hidden>+</span>
-          </span>
-        </summary>
-        <div className="border-t border-border/80 p-4 sm:p-6">
-          <PrinciplesGrid />
-        </div>
-      </details>
+      {/* What changed */}
+      <section className="pt-24 sm:pt-32" aria-labelledby="changes-title">
+        <SectionHeader id="changes-title" kicker="The changes" title="What We Changed">
+          Each change, what it does, and the Feng Shui idea behind it.
+        </SectionHeader>
+        <ChangeCards changes={analysis.changes} issues={analysis.issues} className="mt-12 sm:mt-16" />
+      </section>
 
-      <Section eyebrow="The edit" title="What We Changed" intro="Each change, what it does in practical terms, and the Feng Shui idea it comes from.">
-        <ChangeCards changes={analysis.changes} issues={analysis.issues} />
-      </Section>
+      {/* The reading */}
+      <section className="pt-24 sm:pt-32" aria-labelledby="alignment-title">
+        <SectionHeader id="alignment-title" kicker="The reading" title="Feng Shui Alignment">
+          Six principles, each phrased as a question you can ask of your own room.
+        </SectionHeader>
+        <AlignmentPanel
+          alignment={analysis.alignment}
+          showProjected={projected || renderState.status !== "done"}
+          className="mt-12 sm:mt-16"
+        />
+      </section>
 
-      <Section eyebrow="Assessment" title="Feng Shui Alignment" intro="Six principles, each phrased as a question you can check in your own room.">
-        <AlignmentPanel alignment={analysis.alignment} showProjected={optimized !== null || renderState.status !== "done"} />
-      </Section>
-
-      <Section eyebrow="Observed vs. recommended" title="What We Noticed" intro="What the photo shows, kept separate from what we suggest — and the traditional reasoning behind each point.">
-        <IssuesList issues={analysis.issues} />
-        <details className="group mt-8 rounded-2xl border border-border bg-surface/70">
-          <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-4 text-sm font-medium">
-            Detailed observations
-            <span className="text-lg leading-none text-subtle-foreground transition-transform group-open:rotate-45" aria-hidden>+</span>
-          </summary>
-          <div className="border-t border-border px-5 pb-2">
-            <ObservedDetails observed={analysis.observed} />
-          </div>
-        </details>
-        {(analysisMeta || generationMeta) && (
-          <details className="group mt-3 rounded-2xl border border-border bg-surface/70">
-            <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-4 text-sm font-medium">
-              How this was generated
-              <span className="text-lg leading-none text-subtle-foreground transition-transform group-open:rotate-45" aria-hidden>+</span>
-            </summary>
-            <div className="space-y-3 border-t border-border px-5 py-4 text-sm text-muted-foreground">
-              {analysisMeta && (
-                <p>
-                  Analysis: {analysisMeta.isSample ? "pre-written sample analysis (Demo Mode)" : `${analysisMeta.provider} · ${analysisMeta.model}`}
-                  {!analysisMeta.isSample && ` · ${(analysisMeta.durationMs / 1000).toFixed(1)}s`}
-                </p>
-              )}
-              {generationMeta && (
-                <>
-                  <p>
-                    Image: {generationMeta.isSample ? "pre-rendered sample image (Demo Mode)" : `${generationMeta.provider} · ${generationMeta.model}`}
-                    {!generationMeta.isSample && ` · ${(generationMeta.durationMs / 1000).toFixed(1)}s`}
-                  </p>
-                  <p className="text-foreground">Edit prompt built from the analysis:</p>
-                  <pre className="max-h-72 overflow-auto whitespace-pre-wrap rounded-sm bg-muted p-3 font-mono text-xs leading-relaxed text-foreground/80">
-                    {generationMeta.prompt}
-                  </pre>
-                </>
-              )}
+      {/* Go deeper */}
+      <section className="mx-auto max-w-4xl pt-24 sm:pt-32" aria-labelledby="deeper-title">
+        <p id="deeper-title" className="kicker text-center text-primary">
+          Go deeper
+        </p>
+        <div className="mt-6 border-t border-border">
+          <Disclosure title="The full reading" description="Everything we observed, what we'd change, and the reasoning behind it.">
+            <IssuesList issues={analysis.issues} />
+            <div className="mt-10">
+              <p className="mb-2 text-sm font-medium">What the photo shows</p>
+              <ObservedDetails observed={analysis.observed} />
             </div>
-          </details>
-        )}
-      </Section>
+          </Disclosure>
+          <Disclosure title="Feng Shui, in plain words" description="The five ideas behind every suggestion. Tap any underlined word for a definition.">
+            <PrinciplesGrid className="pt-2" />
+          </Disclosure>
+          {(analysisMeta || generationMeta) && (
+            <Disclosure title="How this was made" description="The models used, and the exact instructions given to the image model.">
+              <dl className="grid gap-x-8 gap-y-2 text-sm sm:grid-cols-[8rem_minmax(0,1fr)]">
+                {analysisMeta && (
+                  <>
+                    <dt className="text-muted-foreground">Analysis</dt>
+                    <dd>
+                      {analysisMeta.isSample
+                        ? "A pre-written sample analysis (Demo Mode)"
+                        : `${analysisMeta.provider} · ${analysisMeta.model} · ${(analysisMeta.durationMs / 1000).toFixed(1)}s`}
+                    </dd>
+                  </>
+                )}
+                {generationMeta && (
+                  <>
+                    <dt className="text-muted-foreground">Image</dt>
+                    <dd>
+                      {generationMeta.isSample
+                        ? "A pre-rendered sample image (Demo Mode)"
+                        : `${generationMeta.provider} · ${generationMeta.model} · ${(generationMeta.durationMs / 1000).toFixed(1)}s`}
+                    </dd>
+                  </>
+                )}
+              </dl>
+              {generationMeta && (
+                <pre className="mt-6 max-h-80 overflow-auto whitespace-pre-wrap rounded-2xl bg-muted/70 p-5 font-sans text-[13px] leading-relaxed text-foreground/80">
+                  {generationMeta.prompt}
+                </pre>
+              )}
+            </Disclosure>
+          )}
+        </div>
+      </section>
 
-      <div className="flex flex-col items-start gap-4 border-t border-border pt-8 sm:flex-row sm:items-center sm:justify-between">
-        <p className="max-w-xl text-xs leading-relaxed text-subtle-foreground">
-          Feng Shui is a traditional philosophy of spatial arrangement. These suggestions are design ideas informed by
-          it — not guarantees of any outcome. Check that any real-world move keeps exits, radiators and outlets clear.
+      <div className="mx-auto mt-16 flex max-w-xl flex-col items-center gap-6 text-center">
+        <p className="text-xs leading-relaxed text-subtle-foreground">
+          Before moving anything, make sure exits, radiators and outlets stay clear.
         </p>
         <div className="md:hidden">{startOver}</div>
       </div>

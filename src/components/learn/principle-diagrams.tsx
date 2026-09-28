@@ -11,7 +11,7 @@ function Room({ children, door = true }: { children?: React.ReactNode; door?: bo
   return (
     <>
       {/* walls, with a gap for the door on the bottom-left */}
-      <path d={door ? "M44 108 H150 V12 H10 V108 H18" : "M10 108 H150 V12 H10 Z"} fill="none" stroke={LINE} strokeWidth="2" strokeLinecap="round" />
+      <path d={door ? "M44 108 H150 V12 H10 V108 H18" : "M10 108 H150 V12 H10 Z"} fill="none" stroke={LINE} strokeWidth="1.6" strokeLinecap="round" />
       {door && <path d="M18 108 A26 26 0 0 1 44 82" fill="none" stroke={SOFT} strokeWidth="1" strokeDasharray="2 3" />}
       {door && <line x1="18" y1="108" x2="18" y2="82" stroke={SOFT} strokeWidth="1.2" />}
       {/* window on the top wall */}
@@ -50,7 +50,7 @@ export function FlowDiagram() {
           d="M31 104 C 36 80, 70 92, 78 72 S 70 40, 78 18"
           fill="none"
           stroke="var(--water)"
-          strokeWidth="2"
+          strokeWidth="1.6"
           strokeLinecap="round"
           strokeDasharray="6 6"
           className="animate-flow"
@@ -64,13 +64,13 @@ export function BalanceDiagram() {
   return (
     <svg viewBox="0 0 160 120" className="h-auto w-full" role="img" aria-label="A beam balanced on a pivot: a large light soft shape on one side, a small dark dense shape on the other.">
       <g className="animate-sway" style={{ transformOrigin: "80px 78px" }}>
-        <line x1="22" y1="78" x2="138" y2="78" stroke={LINE} strokeWidth="2" strokeLinecap="round" />
+        <line x1="22" y1="78" x2="138" y2="78" stroke={LINE} strokeWidth="1.6" strokeLinecap="round" />
         <circle cx="42" cy="58" r="20" fill="var(--mist)" stroke={LINE} strokeWidth="1.5" />
         <rect x="112" y="62" width="16" height="16" rx="2" fill="var(--pine)" />
       </g>
       <path d="M72 100 L80 80 L88 100 Z" fill="var(--sand)" stroke={LINE} strokeWidth="1.5" strokeLinejoin="round" />
-      <text x="42" y="112" textAnchor="middle" fontSize="9" fill="var(--muted-foreground)" style={{ fontFamily: "var(--font-inter)" }}>yin · soft</text>
-      <text x="120" y="112" textAnchor="middle" fontSize="9" fill="var(--muted-foreground)" style={{ fontFamily: "var(--font-inter)" }}>yang · bright</text>
+      <text x="42" y="112" textAnchor="middle" fontSize="9" fill="var(--muted-foreground)" style={{ fontFamily: "var(--font-figtree)" }}>yin · soft</text>
+      <text x="120" y="112" textAnchor="middle" fontSize="9" fill="var(--muted-foreground)" style={{ fontFamily: "var(--font-figtree)" }}>yang · bright</text>
     </svg>
   );
 }
@@ -98,7 +98,7 @@ export function ElementsDiagram() {
         <g key={el.name} transform={`translate(${pts[i].x} ${pts[i].y})`}>
           <circle r="13" fill="var(--surface)" stroke={el.color} strokeWidth="1.5" />
           <g fill={el.color} stroke={el.color}>{el.shape}</g>
-          <text y={i === 0 ? -17 : 25} textAnchor="middle" fontSize="8.5" fill="var(--muted-foreground)" style={{ fontFamily: "var(--font-inter)" }}>
+          <text y={i === 0 ? -17 : 25} textAnchor="middle" fontSize="8.5" fill="var(--muted-foreground)" style={{ fontFamily: "var(--font-figtree)" }}>
             {el.name}
           </text>
         </g>
@@ -113,13 +113,13 @@ export function ClutterDiagram() {
   ];
   return (
     <svg viewBox="0 0 160 120" className="h-auto w-full" role="img" aria-label="Two small rooms side by side: one scattered with objects, one with a few pieces and open floor.">
-      <rect x="8" y="12" width="66" height="96" rx="3" fill="none" stroke={LINE} strokeWidth="2" />
+      <rect x="8" y="12" width="66" height="96" rx="3" fill="none" stroke={LINE} strokeWidth="1.6" />
       {scattered.map(([x, y, w, h], i) => (
         <rect key={i} x={x} y={y} width={w} height={h} rx="1.5" fill={i % 3 === 0 ? "var(--clay)" : "var(--sand)"} stroke={LINE} strokeWidth="0.8" transform={`rotate(${(i * 23) % 30 - 15} ${x + w / 2} ${y + h / 2})`} />
       ))}
       <path d="M79 60 H 86" stroke={SOFT} strokeWidth="1.5" strokeLinecap="round" />
       <path d="M83 56 L 87 60 L 83 64" fill="none" stroke={SOFT} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      <rect x="92" y="12" width="60" height="96" rx="3" fill="none" stroke={LINE} strokeWidth="2" />
+      <rect x="92" y="12" width="60" height="96" rx="3" fill="none" stroke={LINE} strokeWidth="1.6" />
       <rect x="96" y="16" width="22" height="16" rx="2" fill="var(--sand)" stroke={LINE} strokeWidth="1" />
       <circle cx="142" cy="96" r="6" fill="var(--sage-soft)" stroke={LINE} strokeWidth="1" />
       <circle cx="122" cy="64" r="16" fill="var(--mist)" className="animate-breathe" style={{ transformOrigin: "122px 64px" }} />

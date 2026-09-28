@@ -3,22 +3,20 @@ import { Wordmark } from "@/components/site/site-header";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-auto border-t border-border">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-12 sm:px-6 md:flex-row md:items-start md:justify-between">
-        <div className="max-w-md space-y-3">
+    <footer className="site-footer mt-auto">
+      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        <div className="flex flex-col gap-8 border-t border-border py-12 sm:flex-row sm:items-center sm:justify-between">
           <Wordmark />
-          <p className="text-xs leading-relaxed text-subtle-foreground">
-            Feng Shui is a traditional philosophy of spatial arrangement. Feng Shui AI offers design suggestions
-            informed by it and makes no claims about health, wealth or other outcomes. Images are AI-generated
-            visualizations.
-          </p>
+          <nav className="-my-2 flex flex-wrap gap-x-7 text-sm text-muted-foreground" aria-label="Footer">
+            <Link href="/#practice" className="py-2 transition-colors hover:text-foreground">The practice</Link>
+            <Link href="/example" className="py-2 transition-colors hover:text-foreground">Example</Link>
+            <Link href="/optimize" className="py-2 transition-colors hover:text-foreground">Optimize a room</Link>
+          </nav>
         </div>
-        <nav className="-my-2 grid grid-cols-2 gap-x-8 text-sm text-muted-foreground sm:flex">
-          <Link href="/optimize" className="py-2 hover:text-foreground">Optimize a room</Link>
-          <Link href="/example" className="py-2 hover:text-foreground">Example</Link>
-          <Link href="/#principles" className="py-2 hover:text-foreground">Feng Shui basics</Link>
-          <Link href="/#how" className="py-2 hover:text-foreground">How it works</Link>
-        </nav>
+        <p className="max-w-2xl pb-10 text-xs leading-relaxed text-subtle-foreground">
+          Feng Shui is a traditional philosophy of arranging space. Our suggestions are design ideas inspired by it,
+          not promises of health, wealth or fortune. Images are AI-generated visualizations.
+        </p>
       </div>
     </footer>
   );

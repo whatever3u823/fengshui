@@ -18,15 +18,20 @@ Production: `npm run build && npm start`.
 
 ## Design and language
 
-The visual direction is a calm courtyard: warm linen, deep pine and sage, sand and mist, with slow ambient light and water-ripple motifs (all motion respects `prefers-reduced-motion`). Color-blocked sections and small animated floor-plan diagrams keep it from feeling flat.
+The visual direction is a quiet spa: warm linen, deep pine and sage, sand and mist, slow ambient light and a single water-ripple motif (the brand mark, reused sparingly). All motion respects `prefers-reduced-motion`.
+
+- **Type**: Cormorant Garamond for display (light weights, italic kickers), Figtree for reading text. Tokens and utilities live in `src/app/globals.css`.
+- **Rhythm**: every page and section opens the same way (`src/components/site/section-header.tsx`): a centered italic kicker, a light serif title, one line of intro. Content is centered, with generous space between sections.
+- **Restraint**: hairlines instead of boxed cards, color only where it carries meaning (clay for tension, sage for calm, the three rating tones), and one disclosure style (`src/components/ui/disclosure.tsx`) for everything optional.
+- **Results tell one story**: the photo, then how the room feels, what changed and the alignment reading. The detailed reading, the primer and how the result was made sit under a single "Go deeper" heading.
 
 Results are written for people who have never studied Feng Shui, without flattening the tradition:
 
 - **Glossary** (`src/lib/domain/glossary.ts`): every term (chi, command position, mouth of chi, yin and yang, the five elements, sha chi, the armchair configuration…) has three layers: its everyday meaning, how it looks in a room, and the classical idea behind it.
 - **Inline definitions** (`src/components/learn/term.tsx`): `GlossaryText` finds these terms in AI-written text and makes them tappable (tap, hover or keyboard).
-- **Primer** (`src/components/learn/principles.tsx`): "Feng Shui in plain words", five principles with diagrams, on the landing page and inside every result.
+- **Primer** (`src/components/learn/principles.tsx`): five principles with diagrams, on the landing page and inside every result ("Feng Shui, in plain words").
 - **How the room feels** (`src/components/results/feeling-contrast.tsx`): right under the photos, the analysis's `contrast` field pairs the three issues that most affect how the room feels (clay, "Exposed", "Restless"…) with the three improvements that answer them (sage, "Settled", "Calm"…), each tied to what is visible. The overall assessment is a single sentence under the title, so nothing is said twice.
-- **Plain framing in results**: each alignment principle is phrased as a question you can check yourself, ratings have a legend, and issues read "What we see / What we'd change / The Feng Shui idea".
+- **Plain framing in results**: each alignment principle is phrased as a question you can check yourself, ratings have a legend, and each issue in the full reading reads "What we see / What we'd change / Feng Shui idea".
 - **Prompting**: the analysis prompt tells the model to lead with the practical reason, explain each term the first time it's used, name classical concepts precisely, and avoid compass/bagua claims that can't be made from one photo.
 
 ## Environment variables

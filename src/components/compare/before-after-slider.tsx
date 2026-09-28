@@ -27,8 +27,8 @@ export function BeforeAfterSlider({
   afterSrc,
   width,
   height,
-  beforeLabel = "Original",
-  afterLabel = "Feng Shui Optimized",
+  beforeLabel = "Before",
+  afterLabel = "After",
   beforeAlt,
   afterAlt,
   initialPosition = 50,
@@ -108,7 +108,7 @@ export function BeforeAfterSlider({
 
       <span
         className={cn(
-          "pointer-events-none absolute left-3 top-3 rounded-sm bg-black/45 px-2 py-1 text-[11px] font-medium tracking-wide text-white backdrop-blur-sm transition-opacity sm:left-4 sm:top-4",
+          "pointer-events-none absolute left-3 top-3 rounded-full bg-black/35 px-3 py-1 text-xs font-medium text-white backdrop-blur-md transition-opacity duration-300 sm:left-4 sm:top-4",
           position < 12 && "opacity-0",
         )}
       >
@@ -116,7 +116,7 @@ export function BeforeAfterSlider({
       </span>
       <span
         className={cn(
-          "pointer-events-none absolute right-3 top-3 rounded-sm bg-black/45 px-2 py-1 text-[11px] font-medium tracking-wide text-white backdrop-blur-sm transition-opacity sm:right-4 sm:top-4",
+          "pointer-events-none absolute right-3 top-3 rounded-full bg-black/35 px-3 py-1 text-xs font-medium text-white backdrop-blur-md transition-opacity duration-300 sm:right-4 sm:top-4",
           position > 88 && "opacity-0",
         )}
       >

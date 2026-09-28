@@ -2,6 +2,7 @@ import type { RoomAnalysis } from "@/lib/ai/schema";
 import { ISSUE_PRINCIPLES } from "@/lib/domain/glossary";
 import { Badge } from "@/components/ui/badge";
 import { GlossaryText, Term } from "@/components/learn/term";
+import { cn } from "@/lib/utils";
 
 const SEVERITY_VARIANT = { high: "opportunity", medium: "moderate", low: "default" } as const;
 const SEVERITY_LABEL = { high: "Biggest impact", medium: "Worth addressing", low: "Small touch" } as const;
@@ -13,37 +14,44 @@ const SEVERITY_LABEL = { high: "Biggest impact", medium: "Worth addressing", low
 export function IssuesList({ issues }: { issues: RoomAnalysis["issues"] }) {
   if (issues.length === 0) return null;
   return (
-    <ul className="space-y-4">
-      {issues.map((issue) => {
+    <ul>
+      {issues.map((issue, i) => {
         const principle = ISSUE_PRINCIPLES[issue.category];
         return (
           <li
             key={issue.id}
-            className="reveal grid gap-5 rounded-2xl border border-border/80 bg-surface/70 p-5 backdrop-blur-sm sm:p-6 md:grid-cols-[minmax(0,13rem)_minmax(0,1fr)] md:gap-10"
+            className={cn(
+              "grid gap-5 py-8 md:grid-cols-[minmax(0,13rem)_minmax(0,1fr)] md:gap-10",
+              i > 0 && "border-t border-border",
+              i === 0 && "pt-2",
+            )}
           >
-            <div className="flex flex-row flex-wrap items-center gap-x-3 gap-y-2 md:flex-col md:items-start">
-              <h3 className="font-display text-[1.45rem] leading-tight">{issue.title}</h3>
+            <div className="flex flex-col items-start gap-3">
+              <h3 className="font-display text-[1.5rem] font-medium leading-tight">{issue.title}</h3>
               <Badge variant={SEVERITY_VARIANT[issue.severity]}>{SEVERITY_LABEL[issue.severity]}</Badge>
-              {principle?.term && (
-                <p className="w-full text-xs text-subtle-foreground">
-                  Feng Shui idea: <Term id={principle.term}>{principle.label}</Term>
-                </p>
-              )}
             </div>
-            <div className="grid gap-5 sm:grid-cols-2 sm:gap-8">
+            <div className="grid gap-6 sm:grid-cols-2 sm:gap-8">
               <div>
-                <p className="eyebrow mb-1.5">What we see</p>
-                <p className="text-sm leading-relaxed text-foreground/85">{issue.observation}</p>
+                <p className="mb-1.5 text-sm font-medium">What we see</p>
+                <p className="text-[15px] leading-relaxed text-foreground/80">{issue.observation}</p>
               </div>
               <div>
-                <p className="eyebrow mb-1.5 text-primary">What we&apos;d change</p>
-                <p className="text-sm leading-relaxed text-foreground/85">
+                <p className="mb-1.5 text-sm font-medium text-primary">What we&apos;d change</p>
+                <p className="text-[15px] leading-relaxed text-foreground/80">
                   <GlossaryText text={issue.recommendation} />
                 </p>
               </div>
               {issue.traditionalContext && (
-                <div className="rounded-xl bg-mist/60 px-4 py-3 sm:col-span-2">
-                  <p className="mb-1 text-[11px] font-medium uppercase tracking-[0.16em] text-water">The Feng Shui idea</p>
+                <div className="rounded-2xl bg-mist/60 px-5 py-4 sm:col-span-2">
+                  <p className="mb-1.5 text-sm font-medium text-water">
+                    {principle?.term ? (
+                      <>
+                        Feng Shui idea: <Term id={principle.term}>{principle.label}</Term>
+                      </>
+                    ) : (
+                      "The Feng Shui idea"
+                    )}
+                  </p>
                   <p className="text-[15px] leading-relaxed text-foreground/80">
                     <GlossaryText text={issue.traditionalContext} skip={principle?.term ? [principle.term] : undefined} />
                   </p>
@@ -59,7 +67,7 @@ export function IssuesList({ issues }: { issues: RoomAnalysis["issues"] }) {
 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="grid gap-1 py-3.5 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-6">
+    <div className="grid gap-1 py-4 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-6">
       <dt className="text-sm text-muted-foreground">{label}</dt>
       <dd className="text-sm leading-relaxed">{children}</dd>
     </div>
@@ -68,7 +76,7 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
 
 export function ObservedDetails({ observed }: { observed: RoomAnalysis["observed"] }) {
   return (
-    <dl className="divide-y divide-border">
+    <dl className="divide-y divide-border border-y border-border">
       <Row label="Viewpoint">{observed.cameraViewpoint}</Row>
       {observed.openings.length > 0 && (
         <Row label="Doors & windows">

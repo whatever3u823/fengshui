@@ -67,15 +67,15 @@ export function UploadStep({ maxBytes, onSelected }: { maxBytes: number; onSelec
 
   return (
     <div>
-      <header className="max-w-2xl">
-        <h1 className="font-display text-4xl leading-tight sm:text-5xl">Upload a photo of your room</h1>
-        <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
-          We&apos;ll keep your walls, windows, floor and camera angle exactly as they are, and rearrange only what can move.
+      <header className="mx-auto max-w-2xl text-center">
+        <h1 className="font-display-light text-[2.75rem] leading-[1.05] sm:text-[3.5rem]">Upload a photo of your room</h1>
+        <p className="mx-auto mt-4 max-w-lg text-[17px] leading-relaxed text-muted-foreground">
+          Your walls, windows and floor stay exactly as they are. Only what can move, moves.
         </p>
       </header>
 
       {/* Dropzone and tips share a top edge and stretch to the same height. */}
-      <div className="mt-8 grid gap-6 lg:grid-cols-12 lg:gap-8">
+      <div className="mt-12 grid gap-4 lg:grid-cols-12 lg:gap-5">
         <div className="flex flex-col lg:col-span-8">
           <div
             onDragEnter={(e) => (e.preventDefault(), setDragActive(true))}
@@ -89,32 +89,41 @@ export function UploadStep({ maxBytes, onSelected }: { maxBytes: number; onSelec
               void accept(e.dataTransfer.files?.[0]);
             }}
             className={cn(
-              "relative flex min-h-[280px] flex-1 flex-col items-center justify-center gap-4 overflow-hidden rounded-3xl border border-dashed border-sage bg-gradient-to-br from-surface/90 via-surface/70 to-sage-soft/60 px-6 py-12 text-center backdrop-blur-sm transition-colors sm:min-h-[340px]",
-              dragActive && "border-primary from-sage-soft to-mist",
+              "relative flex min-h-[300px] flex-1 flex-col items-center justify-center gap-5 overflow-hidden rounded-[2rem] border-[1.5px] border-dashed border-sage/70 bg-surface/60 px-6 py-14 text-center transition-[background-color,border-color] duration-500 ease-calm sm:min-h-[360px]",
+              dragActive && "border-primary bg-sage-soft/70",
             )}
           >
-            <span className="flex size-16 items-center justify-center rounded-full bg-sage-soft text-primary">
+            <span
+              className={cn(
+                "flex size-16 items-center justify-center rounded-full bg-sage-soft text-primary transition-transform duration-500 ease-calm",
+                dragActive && "scale-110",
+              )}
+            >
               {checking ? (
                 <LoaderCircle className="size-6 animate-spin" aria-label="Checking photo" />
               ) : (
-                <ImageUp className="size-6" strokeWidth={1.5} aria-hidden />
+                <ImageUp className="size-6" strokeWidth={1.4} aria-hidden />
               )}
             </span>
-            <div className="hidden space-y-1 sm:block">
-              <p className="text-[17px] font-medium">
-                Drag and drop a photo, or{" "}
-                <button type="button" onClick={() => inputRef.current?.click()} className="underline underline-offset-4 hover:text-foreground/80">
+            <div className="hidden sm:block">
+              <p className="font-display text-[1.75rem] font-medium leading-tight">
+                {dragActive ? "Release to upload" : "Drop your photo here"}
+              </p>
+              <p className="mt-2 text-[15px] text-muted-foreground">
+                or{" "}
+                <button
+                  type="button"
+                  onClick={() => inputRef.current?.click()}
+                  className="font-medium text-foreground underline decoration-border-strong underline-offset-[6px] transition-colors hover:decoration-foreground"
+                >
                   browse files
                 </button>
               </p>
-              <p className="text-sm text-muted-foreground">JPG, PNG or WEBP · up to {formatBytes(maxBytes)}</p>
             </div>
-            <div className="flex flex-col items-center gap-3 sm:hidden">
-              <Button type="button" size="lg" onClick={() => inputRef.current?.click()}>
-                <Camera /> Take or choose photo
-              </Button>
-              <p className="text-sm text-muted-foreground">JPG, PNG or WEBP · up to {formatBytes(maxBytes)}</p>
-            </div>
+            <Button type="button" size="lg" onClick={() => inputRef.current?.click()} className="sm:hidden">
+              <Camera /> Take or choose a photo
+            </Button>
+            <p className="text-sm text-subtle-foreground">JPG, PNG or WEBP, up to {formatBytes(maxBytes)}</p>
             <input
               ref={inputRef}
               type="file"
@@ -129,33 +138,38 @@ export function UploadStep({ maxBytes, onSelected }: { maxBytes: number; onSelec
           </div>
 
           {error && (
-            <p role="alert" className="mt-4 flex items-start gap-2 text-sm text-destructive">
+            <p role="alert" className="mt-4 flex items-start justify-center gap-2 text-sm text-destructive">
               <CircleAlert className="mt-0.5 size-4 shrink-0" aria-hidden /> {error}
             </p>
           )}
         </div>
 
-        <aside className="flex flex-col rounded-2xl border border-border/80 bg-surface/70 p-6 backdrop-blur-sm lg:col-span-4">
-          <p className="eyebrow mb-4">For best results</p>
-          <ul className="space-y-4">
+        <aside className="flex flex-col rounded-[2rem] bg-sage-soft/55 p-7 sm:p-8 lg:col-span-4">
+          <h2 className="font-display text-[1.6rem] font-medium leading-tight">For best results</h2>
+          <ul className="mb-8 mt-5 space-y-4">
             {TIPS.map(({ icon: Icon, text }) => (
-              <li key={text} className="flex items-start gap-3 text-sm leading-relaxed">
-                <Icon className="mt-[3px] size-4 shrink-0 text-muted-foreground" strokeWidth={1.6} aria-hidden />
+              <li key={text} className="flex items-start gap-3 text-[15px] leading-relaxed">
+                <Icon className="mt-[4px] size-4 shrink-0 text-primary/80" strokeWidth={1.5} aria-hidden />
                 {text}
               </li>
             ))}
           </ul>
-          <p className="mt-6 border-t border-border pt-4 text-xs leading-relaxed text-subtle-foreground lg:mt-auto">
-            Location data is removed from your photo before analysis. Photos are sent to our AI providers to create your
-            result and aren&apos;t saved by this app.
+          <p className="mt-auto border-t border-primary/10 pt-5 text-xs leading-relaxed text-muted-foreground">
+            Location data is removed before analysis. Photos are sent to our AI providers only to create your result, and
+            aren&apos;t saved by this app.
           </p>
         </aside>
       </div>
 
-      <p className="mt-6 text-sm text-muted-foreground">
-        No photo handy?{" "}
-        <button type="button" onClick={useSample} className="font-medium text-foreground underline underline-offset-4" disabled={checking}>
-          Try the sample bedroom
+      <p className="mt-10 text-center text-[15px] text-muted-foreground">
+        No photo to hand?{" "}
+        <button
+          type="button"
+          onClick={useSample}
+          className="font-medium text-foreground underline decoration-border-strong underline-offset-[6px] transition-colors hover:decoration-foreground"
+          disabled={checking}
+        >
+          Try our sample bedroom
         </button>
       </p>
     </div>

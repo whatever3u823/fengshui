@@ -4,23 +4,31 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-[background-color,color,border-color,opacity,transform] duration-200 disabled:pointer-events-none disabled:opacity-45 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:translate-y-px",
+  [
+    "group/btn inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full font-medium tracking-[0.005em]",
+    "transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-calm active:scale-[0.985]",
+    "disabled:pointer-events-none disabled:opacity-40",
+    "[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:transition-transform [&_svg]:duration-300",
+    "hover:[&_svg.lucide-arrow-right]:translate-x-0.5",
+  ].join(" "),
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground shadow-[0_1px_0_rgba(255,255,255,0.08)_inset,0_8px_20px_-10px_rgba(31,58,45,0.6)] hover:bg-pine",
-        outline: "border border-border-strong bg-surface/60 text-foreground backdrop-blur-sm hover:bg-sage-soft hover:border-sage",
-        secondary: "bg-sage-soft text-foreground hover:bg-[#d4e0cd]",
-        ghost: "text-foreground hover:bg-sage-soft/70",
-        link: "h-auto px-0 text-foreground underline-offset-4 hover:underline",
+        default:
+          "bg-primary text-primary-foreground shadow-[0_12px_32px_-14px_rgba(34,56,44,0.55)] hover:bg-pine hover:shadow-[0_14px_36px_-14px_rgba(34,56,44,0.7)]",
+        outline: "border border-border-strong bg-surface/50 text-foreground hover:border-primary/35 hover:bg-surface",
+        secondary: "bg-sage-soft text-foreground hover:bg-[#d7e2d1]",
+        ghost: "text-foreground hover:bg-muted/70",
+        link: "h-auto rounded-none px-0 text-foreground underline decoration-foreground/25 decoration-1 underline-offset-[6px] hover:decoration-foreground/70 active:scale-100",
       },
       size: {
-        default: "h-10 px-5",
-        sm: "h-8 px-3.5 text-[13px]",
-        lg: "h-12 px-7 text-[15px]",
-        icon: "size-10",
+        default: "h-11 px-6 text-[15px]",
+        sm: "h-9 px-4 text-sm",
+        lg: "h-[3.25rem] px-8 text-[15px]",
+        icon: "size-11",
       },
     },
+    compoundVariants: [{ variant: "link", className: "h-auto min-h-11 px-0" }],
     defaultVariants: { variant: "default", size: "default" },
   },
 );

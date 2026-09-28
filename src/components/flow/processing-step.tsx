@@ -72,12 +72,12 @@ export function ProcessingStep({
   const running = !error;
   const elapsed = useElapsed(running);
   const note = useRotating(WAIT_NOTES.length, 8000, running);
-  const heading = error ? "We hit a snag" : rendering ? "Rendering your optimized room…" : "Analyzing your room…";
+  const heading = error ? "We couldn't finish this one" : rendering ? "Rendering your optimized room…" : "Analyzing your room…";
 
   return (
-    <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
+    <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
       <div className="lg:col-span-7">
-        <figure className="relative overflow-hidden rounded-[22px] bg-muted shadow-[0_30px_80px_-40px_rgba(31,58,45,0.45)]" style={{ aspectRatio: aspect }}>
+        <figure className="relative overflow-hidden rounded-[1.75rem] bg-muted shadow-[0_40px_100px_-50px_rgba(34,56,44,0.5)]" style={{ aspectRatio: aspect }}>
           {/* eslint-disable-next-line @next/next/no-img-element -- local object URL preview */}
           <img
             src={previewUrl}
@@ -94,30 +94,30 @@ export function ProcessingStep({
       </div>
 
       <div className="lg:col-span-5" aria-live="polite">
-        <h1 className="font-display text-4xl leading-tight sm:text-[2.75rem]">{heading}</h1>
+        <h1 className="font-display-light text-[2.5rem] leading-[1.05] sm:text-[3rem]">{heading}</h1>
         {!error && (
-          <p className="mt-2 font-mono text-xs text-subtle-foreground">
+          <p className="mt-3 text-sm tabular-nums text-subtle-foreground">
             {Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, "0")}
-            {rendering && " · rendering usually takes under two minutes"}
+            {rendering && " · this last step usually takes under two minutes"}
           </p>
         )}
 
         {error ? (
-          <div className="mt-6 space-y-5">
-            <p className="flex items-start gap-2.5 text-[15px] leading-relaxed">
-              <CircleAlert className="mt-1 size-4 shrink-0 text-destructive" aria-hidden />
+          <div className="mt-6 space-y-8">
+            <p className="flex items-start gap-2.5 text-[17px] leading-relaxed text-muted-foreground">
+              <CircleAlert className="mt-1.5 size-4 shrink-0 text-destructive" aria-hidden />
               {error.message}
             </p>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-3">
               {error.retryable && <Button onClick={onRetry}>Try again</Button>}
               <Button variant="outline" onClick={onStartOver}>
-                Choose a different photo
+                Choose another photo
               </Button>
             </div>
           </div>
         ) : (
           <>
-            <ol className="mt-8 space-y-3.5">
+            <ol className="mt-10 space-y-4">
               {PIPELINE_STAGES.map((stage) => {
                 const status = stages[stage.id];
                 if (status === "skipped") return null;
@@ -133,9 +133,9 @@ export function ProcessingStep({
                   >
                     <span className="flex size-5 items-center justify-center">
                       {status === "done" ? (
-                        <Check className="size-4 text-strong" strokeWidth={2.2} aria-label="done" />
+                        <Check className="size-4 text-strong" strokeWidth={2} aria-label="done" />
                       ) : status === "active" ? (
-                        <LoaderCircle className="size-4 animate-spin" aria-label="in progress" />
+                        <LoaderCircle className="size-4 animate-spin text-primary" strokeWidth={1.75} aria-label="in progress" />
                       ) : (
                         <span className="size-1.5 rounded-full bg-border-strong" aria-hidden />
                       )}
@@ -145,14 +145,14 @@ export function ProcessingStep({
                 );
               })}
             </ol>
-            {summary && <p className="animate-fade-up mt-8 border-t border-border pt-4 text-sm text-muted-foreground">{summary}</p>}
-            <div className="mt-8 rounded-2xl bg-mist/60 p-5">
-              <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.16em] text-water">While you wait</p>
-              <p key={note} className="animate-fade-up font-display text-[1.3rem] leading-snug text-foreground/85">
+            {summary && <p className="animate-fade-up mt-8 border-t border-border pt-5 text-sm text-muted-foreground">{summary}</p>}
+            <div className="mt-10 rounded-3xl bg-mist/60 p-6 sm:p-7">
+              <p className="kicker text-water">A thought while you wait</p>
+              <p key={note} className="animate-fade-in mt-2 font-display text-[1.4rem] leading-snug text-foreground/85">
                 {WAIT_NOTES[note]}
               </p>
             </div>
-            <Button variant="ghost" size="sm" onClick={onCancel} className="mt-8 -ml-3.5 text-muted-foreground">
+            <Button variant="link" onClick={onCancel} className="mt-8 text-muted-foreground">
               Cancel
             </Button>
           </>

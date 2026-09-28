@@ -2,37 +2,42 @@
 @import "tw-animate-css";
 
 /*
- * Design tokens — "a quiet garden courtyard": warm linen ground, deep pine for
- * ink and action, sage and mist for calm, sand and clay for warmth. Accents
- * carry meaning (ratings, the five elements); motion is slow and optional.
+ * Feng Shui AI — design tokens.
+ *
+ * A quiet garden courtyard: warm linen ground, moss for ink and action, sage
+ * and mist for calm, sand and clay for warmth. Color carries meaning only
+ * (ratings, the five elements); everything else is space, light and type.
+ * Text colors are checked against WCAG AA on the linen ground.
  */
 :root {
-  --background: #f3f0e7;
-  --foreground: #1e2a22;
-  --surface: #fbfaf5;
-  --muted: #ebe7da;
-  --muted-foreground: #5b665c;
-  --subtle-foreground: #869083;
-  --border: #dcd7c8;
-  --border-strong: #c3c0ad;
-  --primary: #2c4a3a;
-  --primary-foreground: #f5f2e9;
-  --ring: #5c7a66;
+  --background: #f4f1ea;
+  --foreground: #1e2922;
+  --surface: #fbf9f4;
+  --muted: #ece8de;
+  --muted-foreground: #57615a;
+  --subtle-foreground: #646d63;
+  --border: #e2ddd1;
+  --border-strong: #cbc5b6;
+  --primary: #2e4a3b;
+  --primary-foreground: #f6f3ec;
+  --ring: #6f8f76;
 
-  --pine: #1f3a2d;
-  --sage: #8ea58a;
-  --sage-soft: #e1e9dc;
-  --mist: #dde7e4;
-  --water: #3f6763;
-  --sand: #ebe0cb;
+  --pine: #22382c;
+  --sage: #8fa68b;
+  --sage-soft: #e3eadf;
+  --mist: #e0e8e5;
+  --water: #365c58;
+  --sand: #ece3d2;
   --clay: #c4845f;
+  --clay-light: #e3b9a6;
+  --sage-light: #c3d6bc;
 
-  --strong: #4a6c4b;
-  --strong-soft: #dde8d7;
-  --moderate: #95773b;
-  --moderate-soft: #efe5cf;
-  --opportunity: #a4583c;
-  --opportunity-soft: #f2dfd4;
+  --strong: #44664a;
+  --strong-soft: #dfe8da;
+  --moderate: #7c6128;
+  --moderate-soft: #efe6d2;
+  --opportunity: #9c4f35;
+  --opportunity-soft: #f3e2d8;
   --destructive: #9b3b2b;
 
   --el-wood: #5f8052;
@@ -41,7 +46,8 @@
   --el-metal: #9a9f9c;
   --el-water: #35566a;
 
-  --radius: 0.625rem;
+  --radius: 1rem;
+  --ease-calm: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 @theme inline {
@@ -63,6 +69,8 @@
   --color-water: var(--water);
   --color-sand: var(--sand);
   --color-clay: var(--clay);
+  --color-clay-light: var(--clay-light);
+  --color-sage-light: var(--sage-light);
   --color-strong: var(--strong);
   --color-strong-soft: var(--strong-soft);
   --color-moderate: var(--moderate);
@@ -75,43 +83,43 @@
   --color-el-earth: var(--el-earth);
   --color-el-metal: var(--el-metal);
   --color-el-water: var(--el-water);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: var(--radius);
-  --radius-lg: calc(var(--radius) + 4px);
-  --radius-xl: calc(var(--radius) + 8px);
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --radius-sm: calc(var(--radius) - 8px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), ui-serif, Georgia, serif;
+  --ease-calm: cubic-bezier(0.22, 0.61, 0.36, 1);
 
-  --animate-fade-up: fade-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-  --animate-drift-a: drift-a 46s ease-in-out infinite alternate;
-  --animate-drift-b: drift-b 58s ease-in-out infinite alternate;
-  --animate-drift-c: drift-c 70s ease-in-out infinite alternate;
-  --animate-ripple: ripple 7s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+  --animate-fade-up: fade-up 1s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  --animate-fade-in: fade-in 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  --animate-drift-a: drift-a 60s ease-in-out infinite alternate;
+  --animate-drift-b: drift-b 75s ease-in-out infinite alternate;
+  --animate-ripple: ripple 8s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
   --animate-breathe: breathe 6s ease-in-out infinite;
   --animate-flow: flow 2.4s linear infinite;
-  --animate-sway: sway 7s ease-in-out infinite;
+  --animate-sway: sway 8s ease-in-out infinite;
 
   @keyframes fade-up {
-    from { opacity: 0; transform: translateY(14px); }
+    from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: translateY(0); }
   }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
   @keyframes drift-a {
-    from { transform: translate3d(-6%, -4%, 0) scale(1); }
-    to { transform: translate3d(8%, 6%, 0) scale(1.15); }
+    from { transform: translate3d(-5%, -4%, 0) scale(1); }
+    to { transform: translate3d(7%, 5%, 0) scale(1.12); }
   }
   @keyframes drift-b {
-    from { transform: translate3d(6%, 4%, 0) scale(1.1); }
-    to { transform: translate3d(-8%, -6%, 0) scale(0.95); }
-  }
-  @keyframes drift-c {
-    from { transform: translate3d(0, 6%, 0) scale(0.95); }
-    to { transform: translate3d(-6%, -8%, 0) scale(1.1); }
+    from { transform: translate3d(5%, 4%, 0) scale(1.08); }
+    to { transform: translate3d(-7%, -5%, 0) scale(0.96); }
   }
   @keyframes ripple {
     0% { transform: scale(0.35); opacity: 0; }
-    15% { opacity: 0.55; }
-    100% { transform: scale(1.35); opacity: 0; }
+    18% { opacity: 0.5; }
+    100% { transform: scale(1.3); opacity: 0; }
   }
   @keyframes breathe {
     0%, 100% { transform: scale(0.92); opacity: 0.55; }
@@ -121,8 +129,8 @@
     to { stroke-dashoffset: -24; }
   }
   @keyframes sway {
-    0%, 100% { transform: rotate(-2.5deg); }
-    50% { transform: rotate(2.5deg); }
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
   }
 }
 
@@ -133,47 +141,65 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
+    /* Anchored sections land below the sticky header, never under it. */
+    scroll-padding-top: 6rem;
+    scrollbar-color: var(--border-strong) transparent;
   }
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    font-feature-settings: "cv11", "ss01";
     text-rendering: optimizeLegibility;
-  }
-  /* Fine paper grain so large calm areas never feel flat. */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 60;
-    pointer-events: none;
-    opacity: 0.04;
-    mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    -webkit-tap-highlight-color: transparent;
   }
   h1, h2, h3 {
     text-wrap: balance;
   }
-  p, li, dd {
+  p, li, dd, figcaption {
     text-wrap: pretty;
   }
   ::selection {
     background: var(--sage-soft);
+    color: var(--foreground);
   }
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-ring;
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+    border-radius: 6px;
   }
 }
 
 @layer utilities {
+  /* Display serif. Lighter as it grows, sturdier as it shrinks. */
   .font-display {
     font-family: var(--font-serif);
     font-weight: 400;
+    letter-spacing: -0.012em;
+    font-variant-numeric: oldstyle-nums;
+  }
+  .font-display-light {
+    font-family: var(--font-serif);
+    font-weight: 300;
     letter-spacing: -0.015em;
   }
-  .eyebrow {
-    @apply text-[11px] font-medium tracking-[0.18em] uppercase text-muted-foreground;
+  /* The quiet italic line that introduces a section. */
+  .kicker {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.25rem;
+    line-height: 1.3;
   }
-  /* Soft light pooling through leaves; purely decorative. */
+  /* Small uppercase label, used sparingly for data labels only. */
+  /* Keep the footer clear of a phone's fixed action bar. */
+  @media (width < 64rem) {
+    body:has([data-action-bar="lg"]) .site-footer {
+      padding-bottom: 5.5rem;
+    }
+  }
+  @media (width < 48rem) {
+    body:has([data-action-bar="md"]) .site-footer {
+      padding-bottom: 5.5rem;
+    }
+  }
   .ambient-blob {
     position: absolute;
     border-radius: 9999px;
@@ -184,7 +210,7 @@
     .reveal {
       animation: fade-up linear both;
       animation-timeline: view();
-      animation-range: entry 0% entry 35%;
+      animation-range: entry 0% entry 30%;
     }
   }
 }

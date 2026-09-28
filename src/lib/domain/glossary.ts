@@ -176,8 +176,8 @@ export const ALIGNMENT_EXPLAINERS = {
 
 export const RATING_EXPLAINERS = {
   strong: "Already working well",
-  moderate: "Partly there — small changes help",
-  opportunity: "Where a change makes the biggest difference",
+  moderate: "Partly there",
+  opportunity: "Where a change helps most",
   not_applicable: "Doesn't apply to this room",
 } as const;
 

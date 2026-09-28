@@ -179,74 +179,71 @@ export function OptimizeFlow({ config }: { config: PublicConfig }) {
   const stepIndex = phase === "upload" ? 0 : phase === "details" ? 1 : phase === "processing" ? 2 : 3;
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 pb-16 pt-8 sm:px-6 sm:pt-10">
-      <div className="mb-8 flex flex-col gap-4 sm:mb-12 sm:flex-row sm:items-center sm:justify-between">
-        <Stepper current={stepIndex} />
-        {config.mode !== "live" && phase !== "results" && (
-          <span className="hidden text-xs text-subtle-foreground sm:inline">{config.mode === "demo" ? "Demo Mode" : "Analysis-only mode"}</span>
-        )}
-      </div>
+    <div className="mx-auto w-full max-w-6xl px-5 pb-20 pt-6 sm:px-8 sm:pt-10">
+      <Stepper current={stepIndex} />
 
       {config.mode !== "live" && phase !== "results" && (
-        <div className="mb-10">
+        <div className="mt-6 flex justify-center">
           <ModeNotice mode={config.mode} uploadedOwnPhoto={photo !== null && !photo.isSample} />
         </div>
       )}
 
-      {phase === "upload" && (
-        <UploadStep
-          maxBytes={config.maxUploadBytes}
-          onSelected={(selected) => {
-            setPhoto(selected);
-            if (selected.isSample) setDetails((d) => ({ ...d, roomType: d.roomType ?? "bedroom" }));
-            setPhase("details");
-          }}
-        />
-      )}
+      <div className="mt-12 sm:mt-16">
+        {phase === "upload" && (
+          <UploadStep
+            maxBytes={config.maxUploadBytes}
+            onSelected={(selected) => {
+              setPhoto(selected);
+              if (selected.isSample) setDetails((d) => ({ ...d, roomType: d.roomType ?? "bedroom" }));
+              setPhase("details");
+            }}
+          />
+        )}
 
-      {phase === "details" && photo && (
-        <DetailsStep
-          photo={photo}
-          value={details}
-          onChange={setDetails}
-          onRemovePhoto={startOver}
-          onReplacePhoto={replacePhoto}
-          onSubmit={run}
-        />
-      )}
+        {phase === "details" && photo && (
+          <DetailsStep
+            photo={photo}
+            value={details}
+            onChange={setDetails}
+            onRemovePhoto={startOver}
+            onReplacePhoto={replacePhoto}
+            onSubmit={run}
+          />
+        )}
 
-      {phase === "processing" && photo && (
-        <ProcessingStep
-          previewUrl={photo.previewUrl}
-          aspect={photo.width / photo.height}
-          stages={stages}
-          summary={summary}
-          error={error}
-          onCancel={cancel}
-          onRetry={run}
-          onStartOver={startOver}
-        />
-      )}
+        {phase === "processing" && photo && (
+          <ProcessingStep
+            previewUrl={photo.previewUrl}
+            aspect={photo.width / photo.height}
+            stages={stages}
+            summary={summary}
+            error={error}
+            onCancel={cancel}
+            onRetry={run}
+            onStartOver={startOver}
+          />
+        )}
 
-      {phase === "results" && analysisResult && project && (
-        <ResultsView
-          context="app"
-          original={analysisResult.image}
-          optimized={generation?.optimizedImage ?? null}
-          analysis={analysisResult.analysis}
-          fengShuiMode={details.fengShuiMode}
-          analysisMeta={analysisResult.meta}
-          generationMeta={generation?.meta ?? null}
-          renderState={renderState}
-          onRetryRender={retryRender}
-          onStartOver={startOver}
-          notice={
-            analysisResult.meta.isSample || config.mode !== "live" ? (
-              <ModeNotice mode={config.mode} uploadedOwnPhoto={photo !== null && !photo.isSample} />
-            ) : null
-          }
-        />
-      )}
+        {phase === "results" && analysisResult && project && (
+          <ResultsView
+            context="app"
+            original={analysisResult.image}
+            optimized={generation?.optimizedImage ?? null}
+            analysis={analysisResult.analysis}
+            fengShuiMode={details.fengShuiMode}
+            analysisMeta={analysisResult.meta}
+            generationMeta={generation?.meta ?? null}
+            renderState={renderState}
+            onRetryRender={retryRender}
+            onStartOver={startOver}
+            notice={
+              analysisResult.meta.isSample || config.mode !== "live" ? (
+                <ModeNotice mode={config.mode} uploadedOwnPhoto={photo !== null && !photo.isSample} />
+              ) : null
+            }
+          />
+        )}
+      </div>
     </div>
   );
 }
