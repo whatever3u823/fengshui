@@ -128,16 +128,44 @@ const ChangeModel = z.object({
   relatedIssueIds: z.array(z.string()),
 });
 
+const ContrastItemModel = z.object({
+  feeling: z
+    .string()
+    .describe("One or two words naming how this part of the room tends to feel, e.g. 'Exposed', 'Cramped', 'Settled', 'At ease'."),
+  title: z.string().describe("2-5 words naming the visible cause, e.g. 'Bed under the window'."),
+  detail: z
+    .string()
+    .describe(
+      "One short sentence (under 22 words) linking what is visible to that feeling, hedged ('can feel', 'tends to feel'). Must not repeat the title.",
+    ),
+});
+
 export const RoomAnalysisModelSchema = z.object({
   isInteriorRoom: z
     .boolean()
     .describe("False if the image is not a photograph of an interior room."),
   roomType: RoomTypeSchema,
   roomTypeConfidence: z.enum(["high", "medium", "low"]),
-  overallAssessment: z.string().describe("Two to three sentences, calm and specific."),
+  overallAssessment: z
+    .string()
+    .describe(
+      "ONE sentence, under 25 words: the room's character and the single biggest opportunity. Do not list individual issues; they are shown elsewhere.",
+    ),
   observed: ObservedModel,
   issues: z.array(IssueModel),
   changes: z.array(ChangeModel),
+  contrast: z
+    .object({
+      before: z
+        .array(ContrastItemModel)
+        .describe("Exactly 3: the three issues that most affect how the room feels, most impactful first."),
+      after: z
+        .array(ContrastItemModel)
+        .describe(
+          "Exactly 3: the three biggest improvements from the changes, in the same order as 'before' so item N answers before-item N.",
+        ),
+    })
+    .describe("A before/after summary of how the room feels, for the user's at-a-glance comparison."),
   alignment: z.object({
     flow: AlignmentEntryModel,
     commandPosition: AlignmentEntryModel,
@@ -182,7 +210,7 @@ export const RoomAnalysisSchema = z.object({
   isInteriorRoom: z.boolean(),
   roomType: RoomTypeSchema,
   roomTypeConfidence: z.enum(["high", "medium", "low"]),
-  overallAssessment: requiredText(1200),
+  overallAssessment: requiredText(400),
   observed: z.object({
     cameraViewpoint: bodyText,
     architecture: list(shortText, 20),
@@ -224,6 +252,10 @@ export const RoomAnalysisSchema = z.object({
     )
     .min(1)
     .transform((items) => items.slice(0, 10)),
+  contrast: z.object({
+    before: list(z.object({ feeling: requiredText(28), title: requiredText(70), detail: requiredText(220) }), 3),
+    after: list(z.object({ feeling: requiredText(28), title: requiredText(70), detail: requiredText(220) }), 3),
+  }),
   alignment: z.object({
     flow: AlignmentEntry,
     commandPosition: AlignmentEntry,
@@ -239,6 +271,7 @@ export const RoomAnalysisSchema = z.object({
 export type RoomAnalysis = z.infer<typeof RoomAnalysisSchema>;
 export type AnalysisIssue = RoomAnalysis["issues"][number];
 export type AnalysisChange = RoomAnalysis["changes"][number];
+export type ContrastItem = RoomAnalysis["contrast"]["before"][number];
 
 /** Preferences sent by the client with the photo. */
 export const AnalysisPreferencesSchema = z.object({

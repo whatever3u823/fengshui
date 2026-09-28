@@ -10,7 +10,7 @@ export const SAMPLE_BEDROOM_ANALYSIS: RoomAnalysis = {
   roomType: "bedroom",
   roomTypeConfidence: "high",
   overallAssessment:
-    "A bright, well-proportioned bedroom with good daylight and a clean architectural shell. The current arrangement works against it: the bed is pushed into the corner beneath the window, the desk sits in the path from the door, and loose boxes and clothing crowd the middle of the floor.",
+    "A bright, well-built bedroom whose layout, not its architecture, is what holds it back.",
   observed: {
     cameraViewpoint:
       "Taken at standing height from the front-right corner, looking toward the back-left. The back wall, most of the left wall and part of the right wall are visible.",
@@ -186,6 +186,42 @@ export const SAMPLE_BEDROOM_ANALYSIS: RoomAnalysis = {
       relatedIssueIds: ["issue-5"],
     },
   ],
+  contrast: {
+    before: [
+      {
+        feeling: "Exposed",
+        title: "Bed under the window",
+        detail: "Glass behind the headboard and no clear view of the door can leave the bed feeling unguarded.",
+      },
+      {
+        feeling: "Obstructed",
+        title: "Desk in the doorway",
+        detail: "Your first step inside meets a chair and desk, so arriving tends to feel like squeezing past.",
+      },
+      {
+        feeling: "Restless",
+        title: "Clutter and one harsh light",
+        detail: "Boxes on the floor and a cool overhead glow keep the eye busy when the room should wind down.",
+      },
+    ],
+    after: [
+      {
+        feeling: "Settled",
+        title: "Bed on a solid wall",
+        detail: "A wall at your back and a diagonal view of the door give the bed a protected, anchored feel.",
+      },
+      {
+        feeling: "Welcoming",
+        title: "A clear way in",
+        detail: "The door now opens onto open floor, so walking in feels easy and unhurried.",
+      },
+      {
+        feeling: "Calm",
+        title: "Clear floor, warm lamplight",
+        detail: "Open floor, a living plant and low warm light let the room quiet down in the evening.",
+      },
+    ],
+  },
   alignment: {
     flow: { current: "opportunity", projected: "strong", note: "The entry path is blocked by the desk and the floor is crowded." },
     commandPosition: {

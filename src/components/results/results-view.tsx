@@ -2,12 +2,13 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ArrowRight, Columns2, Download, Info, LoaderCircle, RefreshCw, RotateCcw, Share2, SplitSquareHorizontal } from "lucide-react";
+import { ArrowRight, Columns2, Download, LoaderCircle, RefreshCw, RotateCcw, Share2, SplitSquareHorizontal } from "lucide-react";
 import { toast } from "sonner";
 import { BeforeAfterSlider } from "@/components/compare/before-after-slider";
 import { ChangeCards } from "@/components/results/change-cards";
 import { AlignmentPanel } from "@/components/results/alignment-panel";
 import { IssuesList, ObservedDetails } from "@/components/results/observations";
+import { FeelingContrast } from "@/components/results/feeling-contrast";
 import { PrinciplesGrid } from "@/components/learn/principles";
 import { GlossaryText } from "@/components/learn/term";
 import { Button } from "@/components/ui/button";
@@ -131,6 +132,9 @@ export function ResultsView({
         <h1 className="font-display text-[2.6rem] leading-[1.05] sm:text-6xl">
           {context === "example" ? "A Feng Shui Transformation" : "Your Feng Shui Transformation"}
         </h1>
+        <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-muted-foreground">
+          <GlossaryText text={analysis.overallAssessment} />
+        </p>
       </header>
 
       {notice}
@@ -235,26 +239,16 @@ export function ResultsView({
       </div>
       </div>
 
-      <div className="max-w-4xl">
-        <p className="eyebrow mb-3">In short</p>
-        <p className="font-display text-[1.6rem] leading-snug text-foreground/90 sm:text-[2rem]">
-          <GlossaryText text={analysis.overallAssessment} />
-        </p>
-        <p className="mt-5 flex items-start gap-2 text-sm leading-relaxed text-muted-foreground">
-          <Info className="mt-[3px] size-4 shrink-0 text-sage" aria-hidden />
-          <span>
-            Throughout this page,{" "}
-            <span className="underline decoration-sage decoration-dotted decoration-[1.5px] underline-offset-[3px]">underlined terms</span>{" "}
-            can be tapped for their everyday meaning and the classical idea behind them.
-          </span>
-        </p>
-      </div>
+      <FeelingContrast contrast={analysis.contrast} projected={optimized !== null} />
 
       <details className="group rounded-2xl border border-border/80 bg-mist/50 backdrop-blur-sm">
         <summary className="flex cursor-pointer list-none flex-col gap-1 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <span>
             <span className="font-display text-2xl">New to Feng Shui?</span>
-            <span className="mt-0.5 block text-sm text-muted-foreground">The five ideas behind these suggestions, in plain words — two minutes to read.</span>
+            <span className="mt-0.5 block text-sm text-muted-foreground">
+              The five ideas behind these suggestions, in plain words. Underlined terms anywhere on this page can also be
+              tapped for a quick definition.
+            </span>
           </span>
           <span className="mt-2 inline-flex items-center gap-2 text-sm font-medium text-primary sm:mt-0">
             <span className="group-open:hidden">Show the basics</span>
