@@ -6,6 +6,7 @@ import {
   FlowDiagram,
 } from "@/components/learn/principle-diagrams";
 import { Term } from "@/components/learn/term";
+import { Ripples } from "@/components/site/ambient";
 import type { GlossaryId } from "@/lib/domain/glossary";
 import { cn } from "@/lib/utils";
 
@@ -118,9 +119,10 @@ export function PrinciplesGrid({ className }: { className?: string }) {
       {PRINCIPLES.map((p) => (
         <PrincipleCard key={p.id} principle={p} />
       ))}
-      <aside className="reveal flex flex-col justify-between gap-6 rounded-2xl bg-primary p-6 text-primary-foreground sm:col-span-2 lg:col-span-1">
-        <p className="font-display text-[1.7rem] leading-tight">A tradition, read with care.</p>
-        <div className="space-y-3 text-sm leading-relaxed text-primary-foreground/75">
+      <aside className="reveal relative flex flex-col gap-5 overflow-hidden rounded-2xl bg-primary p-6 text-primary-foreground sm:col-span-2 lg:col-span-1">
+        <Ripples tone="light" className="-bottom-24 -right-24 size-72" />
+        <p className="relative font-display text-[1.7rem] leading-tight">A tradition, read with care.</p>
+        <div className="relative space-y-3 text-sm leading-relaxed text-primary-foreground/75">
           <p>
             Feng Shui is a centuries-old Chinese practice of arranging space. We work in its{" "}
             <Term id="formSchool" className="decoration-primary-foreground/50 hover:bg-primary-foreground/10 focus-visible:bg-primary-foreground/10">form-school</Term>{" "}

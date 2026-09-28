@@ -85,8 +85,8 @@ const ELEMENTS = [
 
 export function ElementsDiagram() {
   const cx = 80;
-  const cy = 58;
-  const r = 38;
+  const cy = 62;
+  const r = 35;
   const pts = ELEMENTS.map((_, i) => {
     const a = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
     return { x: cx + r * Math.cos(a), y: cy + r * Math.sin(a) };
@@ -98,7 +98,7 @@ export function ElementsDiagram() {
         <g key={el.name} transform={`translate(${pts[i].x} ${pts[i].y})`}>
           <circle r="13" fill="var(--surface)" stroke={el.color} strokeWidth="1.5" />
           <g fill={el.color} stroke={el.color}>{el.shape}</g>
-          <text y={i === 0 ? -18 : 25} textAnchor="middle" fontSize="8.5" fill="var(--muted-foreground)" style={{ fontFamily: "var(--font-inter)" }}>
+          <text y={i === 0 ? -17 : 25} textAnchor="middle" fontSize="8.5" fill="var(--muted-foreground)" style={{ fontFamily: "var(--font-inter)" }}>
             {el.name}
           </text>
         </g>

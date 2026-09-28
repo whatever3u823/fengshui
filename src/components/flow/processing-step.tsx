@@ -152,7 +152,7 @@ export function ProcessingStep({
                 {WAIT_NOTES[note]}
               </p>
             </div>
-            <Button variant="ghost" size="sm" onClick={onCancel} className="mt-8 -ml-3 text-muted-foreground">
+            <Button variant="ghost" size="sm" onClick={onCancel} className="mt-8 -ml-3.5 text-muted-foreground">
               Cancel
             </Button>
           </>

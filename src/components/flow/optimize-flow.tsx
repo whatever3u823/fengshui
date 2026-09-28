@@ -183,7 +183,7 @@ export function OptimizeFlow({ config }: { config: PublicConfig }) {
       <div className="mb-8 flex flex-col gap-4 sm:mb-12 sm:flex-row sm:items-center sm:justify-between">
         <Stepper current={stepIndex} />
         {config.mode !== "live" && phase !== "results" && (
-          <span className="text-xs text-subtle-foreground">{config.mode === "demo" ? "Demo Mode" : "Analysis-only mode"}</span>
+          <span className="hidden text-xs text-subtle-foreground sm:inline">{config.mode === "demo" ? "Demo Mode" : "Analysis-only mode"}</span>
         )}
       </div>
 

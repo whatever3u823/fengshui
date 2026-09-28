@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Columns2, Download, LoaderCircle, RefreshCw, RotateCcw, Share2, SplitSquareHorizontal } from "lucide-react";
+import { ArrowRight, Columns2, Download, Info, LoaderCircle, RefreshCw, RotateCcw, Share2, SplitSquareHorizontal } from "lucide-react";
 import { toast } from "sonner";
 import { BeforeAfterSlider } from "@/components/compare/before-after-slider";
 import { ChangeCards } from "@/components/results/change-cards";
@@ -10,7 +10,6 @@ import { AlignmentPanel } from "@/components/results/alignment-panel";
 import { IssuesList, ObservedDetails } from "@/components/results/observations";
 import { PrinciplesGrid } from "@/components/learn/principles";
 import { GlossaryText } from "@/components/learn/term";
-import { Ripples } from "@/components/site/ambient";
 import { Button } from "@/components/ui/button";
 import { FENG_SHUI_MODE_LABELS, ROOM_TYPE_LABELS, type FengShuiMode } from "@/lib/domain/options";
 import type { RoomAnalysis } from "@/lib/ai/schema";
@@ -109,20 +108,22 @@ export function ResultsView({
     }
   };
 
+  // Ghost button text is pulled flush with the content edge on desktop (-mr-5 offsets px-5).
   const startOver = onStartOver ? (
-    <Button variant="ghost" onClick={onStartOver} className="flex-1 md:flex-none">
+    <Button variant="ghost" onClick={onStartOver} className="-ml-5 md:ml-0 md:-mr-5">
       <RotateCcw /> Start Another Room
     </Button>
   ) : (
-    <Button variant="ghost" asChild className="flex-1 md:flex-none">
+    <Button variant="outline" asChild>
       <Link href="/optimize">
-        <RotateCcw /> Optimize My Room
+        Optimize My Room <ArrowRight />
       </Link>
     </Button>
   );
 
   return (
     <div className="animate-fade-up space-y-12 pb-28 sm:space-y-20 md:pb-10">
+      <div className="space-y-6 sm:space-y-8">
       <header className="max-w-3xl">
         <p className="eyebrow mb-3">
           {roomLabel} · {FENG_SHUI_MODE_LABELS[fengShuiMode].label}
@@ -145,7 +146,7 @@ export function ResultsView({
                 type="button"
                 onClick={() => setView("slider")}
                 aria-pressed={view === "slider"}
-                className={cn("flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors", view === "slider" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}
+                className={cn("flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium transition-colors sm:py-1.5", view === "slider" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}
               >
                 <SplitSquareHorizontal className="size-3.5" /> Slider
               </button>
@@ -153,7 +154,7 @@ export function ResultsView({
                 type="button"
                 onClick={() => setView("split")}
                 aria-pressed={view === "split"}
-                className={cn("flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors", view === "split" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}
+                className={cn("flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium transition-colors sm:py-1.5", view === "split" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}
               >
                 <Columns2 className="size-3.5" /> Side by side
               </button>
@@ -161,8 +162,7 @@ export function ResultsView({
           )}
         </div>
 
-        <div className="relative">
-        <Ripples className="-right-16 -top-16 hidden size-72 lg:block" />
+        <div>
         <div className="relative rounded-[26px] border border-white/60 bg-gradient-to-br from-sage-soft/80 via-surface/50 to-mist/80 p-2 shadow-[0_30px_80px_-40px_rgba(31,58,45,0.45)] sm:p-3">
         {optimized ? (
           view === "slider" ? (
@@ -233,17 +233,20 @@ export function ResultsView({
           <div className="hidden md:ml-auto md:block">{startOver}</div>
         </div>
       </div>
+      </div>
 
-      <div className="grid gap-8 lg:grid-cols-12">
-        <div className="lg:col-span-8">
-          <p className="eyebrow mb-3">In short</p>
-          <p className="font-display text-[1.6rem] leading-snug text-foreground/90 sm:text-[2rem]">
-            <GlossaryText text={analysis.overallAssessment} />
-          </p>
-        </div>
-        <p className="self-end text-sm leading-relaxed text-muted-foreground lg:col-span-4">
-          Throughout this page, <span className="underline decoration-sage decoration-dotted decoration-[1.5px] underline-offset-[3px]">underlined terms</span>{" "}
-          can be tapped for their everyday meaning and the classical idea behind them.
+      <div className="max-w-4xl">
+        <p className="eyebrow mb-3">In short</p>
+        <p className="font-display text-[1.6rem] leading-snug text-foreground/90 sm:text-[2rem]">
+          <GlossaryText text={analysis.overallAssessment} />
+        </p>
+        <p className="mt-5 flex items-start gap-2 text-sm leading-relaxed text-muted-foreground">
+          <Info className="mt-[3px] size-4 shrink-0 text-sage" aria-hidden />
+          <span>
+            Throughout this page,{" "}
+            <span className="underline decoration-sage decoration-dotted decoration-[1.5px] underline-offset-[3px]">underlined terms</span>{" "}
+            can be tapped for their everyday meaning and the classical idea behind them.
+          </span>
         </p>
       </div>
 
@@ -256,7 +259,7 @@ export function ResultsView({
           <span className="mt-2 inline-flex items-center gap-2 text-sm font-medium text-primary sm:mt-0">
             <span className="group-open:hidden">Show the basics</span>
             <span className="hidden group-open:inline">Hide</span>
-            <span className="text-lg leading-none transition-transform group-open:rotate-45">+</span>
+            <span className="text-lg leading-none transition-transform group-open:rotate-45" aria-hidden>+</span>
           </span>
         </summary>
         <div className="border-t border-border/80 p-4 sm:p-6">
@@ -277,7 +280,7 @@ export function ResultsView({
         <details className="group mt-8 rounded-2xl border border-border bg-surface/70">
           <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-4 text-sm font-medium">
             Detailed observations
-            <span className="text-subtle-foreground transition-transform group-open:rotate-45">+</span>
+            <span className="text-lg leading-none text-subtle-foreground transition-transform group-open:rotate-45" aria-hidden>+</span>
           </summary>
           <div className="border-t border-border px-5 pb-2">
             <ObservedDetails observed={analysis.observed} />
@@ -287,7 +290,7 @@ export function ResultsView({
           <details className="group mt-3 rounded-2xl border border-border bg-surface/70">
             <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-4 text-sm font-medium">
               How this was generated
-              <span className="text-subtle-foreground transition-transform group-open:rotate-45">+</span>
+              <span className="text-lg leading-none text-subtle-foreground transition-transform group-open:rotate-45" aria-hidden>+</span>
             </summary>
             <div className="space-y-3 border-t border-border px-5 py-4 text-sm text-muted-foreground">
               {analysisMeta && (

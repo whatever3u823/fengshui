@@ -47,21 +47,21 @@ export default function LandingPage() {
       <main className="flex-1 overflow-x-clip">
         {/* Hero */}
         <section className="relative mx-auto max-w-6xl px-4 pb-20 pt-14 sm:px-6 sm:pt-20 lg:pt-24">
-          <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
-            <div className="animate-fade-up lg:col-span-8">
+          <div className="grid gap-8 xl:grid-cols-12 xl:items-end">
+            <div className="animate-fade-up xl:col-span-7">
               <p className="eyebrow mb-5 flex items-center gap-2">
                 <span className="inline-block size-1.5 rounded-full bg-sage" /> AI room analysis · Feng Shui principles
               </p>
-              <h1 className="font-display text-[2.9rem] leading-[1.02] sm:text-7xl lg:text-[5.4rem]">
+              <h1 className="font-display text-[2.9rem] leading-[1.02] sm:text-7xl lg:text-[4.6rem] xl:text-[5.4rem]">
                 Transform Your Space With <em className="text-primary">Feng Shui AI</em>
               </h1>
             </div>
-            <div className="animate-fade-up space-y-6 [animation-delay:120ms] lg:col-span-4 lg:pb-2">
+            <div className="animate-fade-up space-y-6 [animation-delay:120ms] max-w-xl xl:col-span-5 xl:max-w-none xl:pb-2 xl:pl-6">
               <p className="text-[17px] leading-relaxed text-foreground/80">
                 Upload a photo of your room. We&apos;ll analyze the space and show you how to improve its flow, balance, and
                 energy.
               </p>
-              <div className="flex flex-col gap-2.5 sm:flex-row">
+              <div className="flex flex-col gap-2.5 sm:flex-row sm:flex-wrap">
                 <Button asChild size="lg">
                   <Link href="/optimize">
                     Optimize My Room <ArrowRight />
@@ -75,7 +75,7 @@ export default function LandingPage() {
           </div>
 
           <div className="animate-fade-up relative mt-12 [animation-delay:220ms] sm:mt-16">
-            <Ripples className="-left-24 -top-24 hidden size-80 md:block" />
+            <Ripples className="-left-28 top-24 hidden size-80 md:block" />
             <Ripples className="-bottom-28 -right-20 hidden size-96 md:block" />
             <div className="relative rounded-[28px] border border-white/60 bg-gradient-to-br from-sage-soft/80 via-surface/50 to-mist/80 p-2 shadow-[0_30px_80px_-40px_rgba(31,58,45,0.45)] backdrop-blur-sm sm:p-3">
               <BeforeAfterSlider
@@ -186,7 +186,7 @@ export default function LandingPage() {
               <ul className="grid gap-x-12 gap-y-5 md:grid-cols-2">
                 {ALIGNMENT_CATEGORIES.map((key) => (
                   <li key={key} className="border-b border-border-strong/60 pb-4">
-                    <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex flex-col items-start gap-2 lg:flex-row lg:items-center lg:justify-between lg:gap-3">
                       <span className="text-sm font-medium">{ALIGNMENT_LABELS[key]}</span>
                       <span className="flex items-center gap-1.5">
                         <RatingBadge rating={sample.alignment[key].current} />

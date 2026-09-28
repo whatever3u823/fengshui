@@ -13,11 +13,11 @@ export function SiteFooter() {
             visualizations.
           </p>
         </div>
-        <nav className="flex flex-wrap gap-x-8 gap-y-3 text-sm text-muted-foreground">
-          <Link href="/optimize" className="hover:text-foreground">Optimize a room</Link>
-          <Link href="/example" className="hover:text-foreground">Example</Link>
-          <Link href="/#principles" className="hover:text-foreground">Feng Shui basics</Link>
-          <Link href="/#how" className="hover:text-foreground">How it works</Link>
+        <nav className="-my-2 grid grid-cols-2 gap-x-8 text-sm text-muted-foreground sm:flex">
+          <Link href="/optimize" className="py-2 hover:text-foreground">Optimize a room</Link>
+          <Link href="/example" className="py-2 hover:text-foreground">Example</Link>
+          <Link href="/#principles" className="py-2 hover:text-foreground">Feng Shui basics</Link>
+          <Link href="/#how" className="py-2 hover:text-foreground">How it works</Link>
         </nav>
       </div>
     </footer>

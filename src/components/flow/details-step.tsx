@@ -54,12 +54,12 @@ function Question({ n, title, hint, children }: { n: string; title: string; hint
   return (
     <fieldset className="border-t border-border pt-6">
       <legend className="sr-only">{title}</legend>
-      <div className="mb-4 flex items-baseline gap-3">
-        <span className="font-mono text-xs text-subtle-foreground">{n}</span>
-        <div>
-          <h2 className="text-[17px] font-semibold tracking-tight">{title}</h2>
-          {hint && <p className="mt-1 text-sm text-muted-foreground">{hint}</p>}
-        </div>
+      <div className="mb-4">
+        <h2 className="flex items-baseline gap-2.5 text-[17px] font-semibold tracking-tight">
+          <span className="font-mono text-xs font-normal text-subtle-foreground">{n}</span>
+          {title}
+        </h2>
+        {hint && <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{hint}</p>}
       </div>
       {children}
     </fieldset>
@@ -85,7 +85,16 @@ export function DetailsStep({
   const ready = value.roomType !== null;
 
   return (
-    <div className="grid gap-10 pb-24 lg:grid-cols-12 lg:gap-14 lg:pb-0">
+    <div className="pb-24 lg:pb-0">
+      <header className="max-w-2xl">
+        <h1 className="font-display text-4xl leading-tight sm:text-5xl">Tell us about the room</h1>
+        <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
+          Only the room type is required. Your priorities shape which changes we suggest.
+        </p>
+      </header>
+
+      {/* Photo and questions share a top edge: the first divider lines up with the photo. */}
+      <div className="mt-8 grid gap-10 lg:grid-cols-12 lg:gap-14">
       <div className="lg:col-span-5">
         <div className="lg:sticky lg:top-24">
           <figure className="relative overflow-hidden rounded-[22px] bg-muted shadow-[0_30px_80px_-40px_rgba(31,58,45,0.45)]" style={{ aspectRatio: `${photo.width} / ${photo.height}` }}>
@@ -104,7 +113,7 @@ export function DetailsStep({
             <span className="truncate">
               {photo.isSample ? "Sample bedroom" : photo.file.name} · {photo.width}×{photo.height} · {formatBytes(photo.file.size)}
             </span>
-            <button type="button" onClick={() => replaceRef.current?.click()} className="flex shrink-0 items-center gap-1 font-medium text-foreground hover:underline">
+            <button type="button" onClick={() => replaceRef.current?.click()} className="-my-2 -mr-2 flex shrink-0 items-center gap-1 rounded-full px-2 py-2 font-medium text-foreground hover:underline">
               <RefreshCw className="size-3" /> Replace
             </button>
             <input
@@ -130,13 +139,6 @@ export function DetailsStep({
           if (ready) onSubmit();
         }}
       >
-        <div>
-          <h1 className="font-display text-4xl leading-tight sm:text-5xl">Tell us about the room</h1>
-          <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
-            Only the room type is required. Your priorities shape which changes we suggest.
-          </p>
-        </div>
-
         <Question n="01" title="What type of room is this?">
           <ToggleGroup
             type="single"
@@ -177,7 +179,7 @@ export function DetailsStep({
         <Question
           n="03"
           title="Feng Shui approach"
-          hint="Feng Shui is a traditional spatial-design philosophy. Choose how literally to apply it."
+          hint="Feng Shui is a traditional spatial-design philosophy. Choose how literally to apply it — Traditional is the default."
         >
           <ToggleGroup
             type="single"
@@ -195,10 +197,7 @@ export function DetailsStep({
                   "data-[state=on]:[&_.desc]:text-primary-foreground/70",
                 )}
               >
-                <span className="text-sm font-medium">
-                  {FENG_SHUI_MODE_LABELS[mode].label}
-                  {mode === "traditional" && <span className="ml-1.5 text-[11px] font-normal opacity-60">Default</span>}
-                </span>
+                <span className="text-sm font-medium">{FENG_SHUI_MODE_LABELS[mode].label}</span>
                 <span className="desc text-xs leading-relaxed text-muted-foreground">{FENG_SHUI_MODE_LABELS[mode].description}</span>
               </ToggleGroupItem>
             ))}
@@ -211,6 +210,7 @@ export function DetailsStep({
           </Button>
         </div>
       </form>
+      </div>
     </div>
   );
 }

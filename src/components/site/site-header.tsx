@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 export function Wordmark() {
   return (
-    <Link href="/" className="group flex items-center gap-2.5" aria-label="Feng Shui AI home">
+    <Link href="/" className="group -my-2 inline-flex items-center gap-2.5 py-2" aria-label="Feng Shui AI home">
       <svg viewBox="0 0 24 24" className="size-6 text-primary" fill="none" stroke="currentColor" strokeWidth={1.3} aria-hidden>
         <rect x="3" y="3" width="18" height="18" rx="1" />
         <path d="M3 12h18M12 3v18" strokeOpacity={0.35} />
@@ -19,7 +19,7 @@ export function Wordmark() {
 
 export function SiteHeader({ showCta = true }: { showCta?: boolean }) {
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/70 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/88 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Wordmark />
         <nav className="flex items-center gap-1 sm:gap-2">
