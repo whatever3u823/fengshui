@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Instrument_Serif, Inter } from "next/font/google";
 import { Toaster } from "sonner";
+import { AmbientBackground } from "@/components/site/ambient";
 import "./globals.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f6f4ef",
+  themeColor: "#f3f0e7",
   width: "device-width",
   initialScale: 1,
 };
@@ -30,12 +31,13 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${inter.variable} ${instrumentSerif.variable} ${geistMono.variable} h-full`}>
-      <body className="flex min-h-full flex-col">
+      <body className="relative flex min-h-full flex-col">
+        <AmbientBackground />
         {children}
         <Toaster
           position="bottom-center"
           toastOptions={{
-            className: "!rounded-md !border-border !bg-surface !text-foreground !shadow-sm !font-sans",
+            className: "!rounded-xl !border-border !bg-surface !text-foreground !shadow-md !font-sans",
           }}
         />
       </body>

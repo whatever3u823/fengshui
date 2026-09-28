@@ -88,7 +88,7 @@ export function DetailsStep({
     <div className="grid gap-10 pb-24 lg:grid-cols-12 lg:gap-14 lg:pb-0">
       <div className="lg:col-span-5">
         <div className="lg:sticky lg:top-24">
-          <figure className="relative overflow-hidden rounded-md bg-muted" style={{ aspectRatio: `${photo.width} / ${photo.height}` }}>
+          <figure className="relative overflow-hidden rounded-[22px] bg-muted shadow-[0_30px_80px_-40px_rgba(31,58,45,0.45)]" style={{ aspectRatio: `${photo.width} / ${photo.height}` }}>
             {/* eslint-disable-next-line @next/next/no-img-element -- local object URL preview */}
             <img src={photo.previewUrl} alt="Your uploaded room" className="absolute inset-0 size-full object-cover" />
             <button

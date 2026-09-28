@@ -85,14 +85,14 @@ export function UploadStep({ maxBytes, onSelected }: { maxBytes: number; onSelec
             void accept(e.dataTransfer.files?.[0]);
           }}
           className={cn(
-            "relative mt-8 flex min-h-[280px] flex-col items-center justify-center gap-4 rounded-md border border-dashed border-border-strong bg-surface px-6 py-12 text-center transition-colors sm:min-h-[340px]",
-            dragActive && "border-primary bg-muted",
+            "relative mt-8 flex min-h-[280px] flex-col items-center justify-center gap-4 overflow-hidden rounded-3xl border border-dashed border-sage bg-gradient-to-br from-surface/90 via-surface/70 to-sage-soft/60 px-6 py-12 backdrop-blur-sm text-center transition-colors sm:min-h-[340px]",
+            dragActive && "border-primary from-sage-soft to-mist",
           )}
         >
           {checking ? (
             <LoaderCircle className="size-7 animate-spin text-muted-foreground" aria-label="Checking photo" />
           ) : (
-            <span className="flex size-14 items-center justify-center rounded-full bg-muted">
+            <span className="flex size-16 items-center justify-center rounded-full bg-sage-soft text-primary">
               <ImageUp className="size-6" strokeWidth={1.5} aria-hidden />
             </span>
           )}
@@ -137,7 +137,7 @@ export function UploadStep({ maxBytes, onSelected }: { maxBytes: number; onSelec
       </div>
 
       <aside className="lg:col-span-4 lg:pt-24">
-        <div className="rounded-md border border-border bg-surface p-6">
+        <div className="rounded-2xl border border-border/80 bg-surface/70 p-6 backdrop-blur-sm">
           <p className="eyebrow mb-4">For best results</p>
           <ul className="space-y-4">
             {TIPS.map(({ icon: Icon, text }) => (

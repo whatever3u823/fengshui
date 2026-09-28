@@ -107,7 +107,7 @@ const IssueModel = z.object({
   traditionalContext: z
     .string()
     .describe(
-      "How traditional Feng Shui frames this, phrased as belief ('Traditional Feng Shui associates...'), never as a factual or guaranteed outcome.",
+      "The classical Feng Shui idea behind this, named precisely and explained in plain words for a newcomer, phrased as belief ('Traditional Feng Shui associates...'), never as a factual or guaranteed outcome.",
     ),
 });
 

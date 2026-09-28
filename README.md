@@ -16,6 +16,18 @@ The app runs with **no API keys**. Without keys it starts in a clearly labeled *
 
 Production: `npm run build && npm start`.
 
+## Design and language
+
+The visual direction is a calm courtyard: warm linen, deep pine and sage, sand and mist, with slow ambient light and water-ripple motifs (all motion respects `prefers-reduced-motion`). Color-blocked sections and small animated floor-plan diagrams keep it from feeling flat.
+
+Results are written for people who have never studied Feng Shui, without flattening the tradition:
+
+- **Glossary** (`src/lib/domain/glossary.ts`): every term (chi, command position, mouth of chi, yin and yang, the five elements, sha chi, the armchair configuration…) has three layers: its everyday meaning, how it looks in a room, and the classical idea behind it.
+- **Inline definitions** (`src/components/learn/term.tsx`): `GlossaryText` finds these terms in AI-written text and makes them tappable (tap, hover or keyboard).
+- **Primer** (`src/components/learn/principles.tsx`): "Feng Shui in plain words", five principles with diagrams, on the landing page and inside every result.
+- **Plain framing in results**: each alignment principle is phrased as a question you can check yourself, ratings have a legend, and issues read "What we see / What we'd change / The Feng Shui idea".
+- **Prompting**: the analysis prompt tells the model to lead with the practical reason, explain each term the first time it's used, name classical concepts precisely, and avoid compass/bagua claims that can't be made from one photo.
+
 ## Environment variables
 
 | Variable | Required | Purpose |

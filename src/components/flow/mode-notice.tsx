@@ -6,7 +6,7 @@ export function ModeNotice({ mode, uploadedOwnPhoto = false }: { mode: AppMode; 
   if (mode === "live") return null;
   if (mode === "analysis_only") {
     return (
-      <div role="status" className="flex items-start gap-3 rounded-md border border-moderate/30 bg-moderate-soft/60 px-4 py-3 text-sm">
+      <div role="status" className="flex items-start gap-3 rounded-xl border border-moderate/30 bg-moderate-soft/70 px-4 py-3 text-sm">
         <ImageOff className="mt-0.5 size-4 shrink-0 text-moderate" aria-hidden />
         <p>
           <span className="font-medium">AI image generation is not configured.</span>{" "}
@@ -16,7 +16,7 @@ export function ModeNotice({ mode, uploadedOwnPhoto = false }: { mode: AppMode; 
     );
   }
   return (
-    <div role="status" className="flex items-start gap-3 rounded-md border border-moderate/30 bg-moderate-soft/60 px-4 py-3 text-sm">
+    <div role="status" className="flex items-start gap-3 rounded-xl border border-moderate/30 bg-moderate-soft/70 px-4 py-3 text-sm">
       <FlaskConical className="mt-0.5 size-4 shrink-0 text-moderate" aria-hidden />
       <p>
         <span className="font-medium">Demo Mode — AI image generation is not configured.</span>{" "}

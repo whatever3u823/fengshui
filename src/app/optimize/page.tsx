@@ -16,7 +16,7 @@ export default function OptimizePage() {
   return (
     <>
       <SiteHeader showCta={false} />
-      <main className="flex-1">
+      <main className="flex-1 overflow-x-clip">
         <OptimizeFlow config={config} />
       </main>
     </>

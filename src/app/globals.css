@@ -2,30 +2,46 @@
 @import "tw-animate-css";
 
 /*
- * Design tokens. Warm paper, ink, and three muted earth accents used only for
- * meaning (alignment ratings). Deliberately light-only: the room photography is
- * the centerpiece and reads best on a warm neutral ground.
+ * Design tokens — "a quiet garden courtyard": warm linen ground, deep pine for
+ * ink and action, sage and mist for calm, sand and clay for warmth. Accents
+ * carry meaning (ratings, the five elements); motion is slow and optional.
  */
 :root {
-  --background: #f6f4ef;
-  --foreground: #1b1a17;
-  --surface: #fbfaf7;
-  --muted: #eeebe4;
-  --muted-foreground: #6b675f;
-  --subtle-foreground: #8f8a80;
-  --border: #e0dbd1;
-  --border-strong: #c9c2b5;
-  --primary: #1b1a17;
-  --primary-foreground: #f6f4ef;
-  --ring: #6f6a5f;
-  --strong: #56654a;
-  --strong-soft: #e3e8dc;
-  --moderate: #9a7a3f;
-  --moderate-soft: #f1e9d8;
-  --opportunity: #a0573e;
-  --opportunity-soft: #f3e3db;
+  --background: #f3f0e7;
+  --foreground: #1e2a22;
+  --surface: #fbfaf5;
+  --muted: #ebe7da;
+  --muted-foreground: #5b665c;
+  --subtle-foreground: #869083;
+  --border: #dcd7c8;
+  --border-strong: #c3c0ad;
+  --primary: #2c4a3a;
+  --primary-foreground: #f5f2e9;
+  --ring: #5c7a66;
+
+  --pine: #1f3a2d;
+  --sage: #8ea58a;
+  --sage-soft: #e1e9dc;
+  --mist: #dde7e4;
+  --water: #3f6763;
+  --sand: #ebe0cb;
+  --clay: #c4845f;
+
+  --strong: #4a6c4b;
+  --strong-soft: #dde8d7;
+  --moderate: #95773b;
+  --moderate-soft: #efe5cf;
+  --opportunity: #a4583c;
+  --opportunity-soft: #f2dfd4;
   --destructive: #9b3b2b;
-  --radius: 0.375rem;
+
+  --el-wood: #5f8052;
+  --el-fire: #c0663e;
+  --el-earth: #b48f55;
+  --el-metal: #9a9f9c;
+  --el-water: #35566a;
+
+  --radius: 0.625rem;
 }
 
 @theme inline {
@@ -40,6 +56,13 @@
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-ring: var(--ring);
+  --color-pine: var(--pine);
+  --color-sage: var(--sage);
+  --color-sage-soft: var(--sage-soft);
+  --color-mist: var(--mist);
+  --color-water: var(--water);
+  --color-sand: var(--sand);
+  --color-clay: var(--clay);
   --color-strong: var(--strong);
   --color-strong-soft: var(--strong-soft);
   --color-moderate: var(--moderate);
@@ -47,25 +70,59 @@
   --color-opportunity: var(--opportunity);
   --color-opportunity-soft: var(--opportunity-soft);
   --color-destructive: var(--destructive);
-  --radius-sm: calc(var(--radius) - 2px);
+  --color-el-wood: var(--el-wood);
+  --color-el-fire: var(--el-fire);
+  --color-el-earth: var(--el-earth);
+  --color-el-metal: var(--el-metal);
+  --color-el-water: var(--el-water);
+  --radius-sm: calc(var(--radius) - 4px);
   --radius-md: var(--radius);
-  --radius-lg: calc(var(--radius) + 2px);
+  --radius-lg: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 8px);
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
-  --animate-scan: scan 2.8s ease-in-out infinite;
-  --animate-fade-up: fade-up 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-fade-up: fade-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-drift-a: drift-a 46s ease-in-out infinite alternate;
+  --animate-drift-b: drift-b 58s ease-in-out infinite alternate;
+  --animate-drift-c: drift-c 70s ease-in-out infinite alternate;
+  --animate-ripple: ripple 7s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+  --animate-breathe: breathe 6s ease-in-out infinite;
+  --animate-flow: flow 2.4s linear infinite;
+  --animate-sway: sway 7s ease-in-out infinite;
 
-  @keyframes scan {
-    0% { transform: translateY(-10%); opacity: 0; }
-    15% { opacity: 1; }
-    85% { opacity: 1; }
-    100% { transform: translateY(1000%); opacity: 0; }
-  }
   @keyframes fade-up {
-    from { opacity: 0; transform: translateY(8px); }
+    from { opacity: 0; transform: translateY(14px); }
     to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes drift-a {
+    from { transform: translate3d(-6%, -4%, 0) scale(1); }
+    to { transform: translate3d(8%, 6%, 0) scale(1.15); }
+  }
+  @keyframes drift-b {
+    from { transform: translate3d(6%, 4%, 0) scale(1.1); }
+    to { transform: translate3d(-8%, -6%, 0) scale(0.95); }
+  }
+  @keyframes drift-c {
+    from { transform: translate3d(0, 6%, 0) scale(0.95); }
+    to { transform: translate3d(-6%, -8%, 0) scale(1.1); }
+  }
+  @keyframes ripple {
+    0% { transform: scale(0.35); opacity: 0; }
+    15% { opacity: 0.55; }
+    100% { transform: scale(1.35); opacity: 0; }
+  }
+  @keyframes breathe {
+    0%, 100% { transform: scale(0.92); opacity: 0.55; }
+    50% { transform: scale(1.06); opacity: 1; }
+  }
+  @keyframes flow {
+    to { stroke-dashoffset: -24; }
+  }
+  @keyframes sway {
+    0%, 100% { transform: rotate(-2.5deg); }
+    50% { transform: rotate(2.5deg); }
   }
 }
 
@@ -82,8 +139,19 @@
     font-feature-settings: "cv11", "ss01";
     text-rendering: optimizeLegibility;
   }
+  /* Fine paper grain so large calm areas never feel flat. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.04;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
   ::selection {
-    background: #d9d2c3;
+    background: var(--sage-soft);
   }
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-ring;
@@ -97,7 +165,21 @@
     letter-spacing: -0.015em;
   }
   .eyebrow {
-    @apply text-[11px] font-medium tracking-[0.16em] uppercase text-muted-foreground;
+    @apply text-[11px] font-medium tracking-[0.18em] uppercase text-muted-foreground;
+  }
+  /* Soft light pooling through leaves; purely decorative. */
+  .ambient-blob {
+    position: absolute;
+    border-radius: 9999px;
+    will-change: transform;
+  }
+  /* Scroll-driven reveal where supported; content is always visible otherwise. */
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: fade-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
   }
 }
 

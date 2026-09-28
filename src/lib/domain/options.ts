@@ -61,16 +61,16 @@ export const FENG_SHUI_MODE_LABELS: Record<FengShuiMode, { label: string; descri
   traditional: {
     label: "Traditional / Classical",
     description:
-      "Grounded in classical form-school ideas: command position, balanced pairs, the five elements.",
+      "Applies the classical rules closely: a clear view of the door, matched pairs, a balance of the five natural elements.",
   },
   modern: {
     label: "Modern Feng Shui",
     description:
-      "Applies the core principles with a contemporary, practical lens suited to everyday homes.",
+      "Keeps the core ideas — easy flow, seeing the door, balance — and applies them practically to everyday living.",
   },
   minimalist: {
     label: "Minimalist interpretation",
-    description: "Favors subtraction: fewer objects, open space, calm surfaces, quiet materials.",
+    description: "Mostly removes rather than adds: fewer objects, open floor, calm surfaces, quiet materials.",
   },
 };
 

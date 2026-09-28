@@ -58,7 +58,7 @@ export const SAMPLE_BEDROOM_ANALYSIS: RoomAnalysis = {
       recommendation:
         "Move the bed to the solid section of the back wall to the right of the window, where it has a wall behind it and a diagonal view of the door.",
       traditionalContext:
-        "Traditional Feng Shui associates a solid wall behind the headboard with a sense of support, and a clear diagonal view of the entry with the 'command position'.",
+        "This is the command position — placing the bed so you can see the door without lying in line with it. Classical texts describe the ideal as an 'armchair': a solid wall behind you (the Black Tortoise) and open space ahead. A window behind the headboard is traditionally thought to leave you without that support.",
     },
     {
       id: "issue-2",
@@ -68,7 +68,7 @@ export const SAMPLE_BEDROOM_ANALYSIS: RoomAnalysis = {
       observation: "The desk and chair stand in the first steps from the door into the room.",
       recommendation: "Relocate the desk to the left wall between the window corner and the door so the entry opens into clear floor.",
       traditionalContext:
-        "In classical practice, the entry is often called the 'mouth of chi'; an open path from the door is associated with energy moving freely through the room.",
+        "In classical practice the door is the 'mouth of chi' — where chi, the traditional idea of energy moving through a space, enters much as people and air do. A blocked first step is believed to hold that energy back at the threshold.",
     },
     {
       id: "issue-3",
@@ -77,7 +77,7 @@ export const SAMPLE_BEDROOM_ANALYSIS: RoomAnalysis = {
       title: "Floor Clutter",
       observation: "Cardboard boxes and a pile of clothing occupy the middle of the floor; papers and books are stacked on the desk and nightstand.",
       recommendation: "Clear the floor completely and reduce surfaces to a few intentional objects.",
-      traditionalContext: "Traditional Feng Shui associates accumulated clutter with stagnant energy, particularly in a room meant for rest.",
+      traditionalContext: "Traditional Feng Shui calls this stagnant chi: energy that pools and stops where things pile up. Clearing is usually the first step in any Feng Shui work, before anything new is added.",
     },
     {
       id: "issue-4",
@@ -86,7 +86,7 @@ export const SAMPLE_BEDROOM_ANALYSIS: RoomAnalysis = {
       title: "Visual Balance",
       observation: "A single nightstand and the corner placement leave the bed lopsided, and the right half of the back wall is bare.",
       recommendation: "Center the bed on its wall with a matched pair of nightstands and lamps, and anchor the wall above it with artwork.",
-      traditionalContext: "Balanced pairs on either side of the bed are traditionally associated with partnership and equilibrium.",
+      traditionalContext: "Balanced pairs — matching pieces on either side of the bed — are traditionally associated with partnership and equilibrium, and help the bed feel held rather than pushed aside.",
     },
     {
       id: "issue-5",
@@ -95,7 +95,7 @@ export const SAMPLE_BEDROOM_ANALYSIS: RoomAnalysis = {
       title: "Harsh Light",
       observation: "The only artificial light is a bright, cool overhead fixture.",
       recommendation: "Add warm, low bedside lamps and use the ceiling light more softly in the evening.",
-      traditionalContext: "Softer, layered light is commonly recommended in Feng Shui for bedrooms, which are considered restful, yin spaces.",
+      traditionalContext: "Bedrooms are traditionally yin spaces: yin is the soft, quiet, dim side of the yin and yang pair, yang the bright and active side. A single harsh overhead light pushes the room toward yang, so warm, low light is recommended for evenings.",
     },
     {
       id: "issue-6",
@@ -104,7 +104,7 @@ export const SAMPLE_BEDROOM_ANALYSIS: RoomAnalysis = {
       title: "Natural Elements",
       observation: "Aside from the oak floor and bed frame, there are no plants or natural textures.",
       recommendation: "Introduce a tall plant by the window, a natural-fiber rug and linen bedding.",
-      traditionalContext: "Plants and natural materials are traditionally used to bring the Wood element and a sense of growth into a space.",
+      traditionalContext: "Of the five elements — Wood, Fire, Earth, Metal and Water, a traditional way of balancing materials, colors and shapes — this room is mostly Metal (white walls) with a little Wood in the oak. Living plants add the Wood element, traditionally associated with growth and vitality.",
     },
   ],
   changes: [
@@ -118,7 +118,7 @@ export const SAMPLE_BEDROOM_ANALYSIS: RoomAnalysis = {
       instruction:
         "Move the bed from the back-left corner to the solid section of the back wall right of the window, headboard centered on that section, foot toward the camera. Keep the oak bed frame; neatly make it with light linen bedding.",
       rationale:
-        "A wall behind the headboard and a view of the entry create a more settled resting spot, and both sides of the bed become reachable.",
+        "A wall behind the headboard and a view of the door make a more settled place to rest, and both sides of the bed become reachable.",
       relatedIssueIds: ["issue-1"],
     },
     {
@@ -191,11 +191,11 @@ export const SAMPLE_BEDROOM_ANALYSIS: RoomAnalysis = {
     commandPosition: {
       current: "opportunity",
       projected: "strong",
-      note: "The bed sits under the window without a solid wall behind it.",
+      note: "From the bed the door is visible, but the headboard sits under the window with no solid wall behind it.",
     },
     balance: { current: "opportunity", projected: "strong", note: "Weight is concentrated on the left; the bed has a single nightstand." },
     clutter: { current: "opportunity", projected: "strong", note: "Boxes and clothing occupy the central floor." },
-    naturalElements: { current: "moderate", projected: "strong", note: "Oak floor and furniture help, but there are no plants or soft natural textures." },
+    naturalElements: { current: "moderate", projected: "strong", note: "Oak floor and furniture bring some Wood element, but there are no plants or soft natural textures." },
     lighting: { current: "moderate", projected: "strong", note: "Good daylight, but evening light comes from one cool overhead fixture." },
   },
   preserve: [

@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Check, CircleAlert, LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Ripples } from "@/components/site/ambient";
 import type { PublicError } from "@/lib/errors";
 import { cn } from "@/lib/utils";
 
@@ -17,6 +18,25 @@ export const PIPELINE_STAGES = [
 ] as const;
 export type PipelineStageId = (typeof PIPELINE_STAGES)[number]["id"];
 export type StageStatus = "pending" | "active" | "done" | "skipped";
+
+const WAIT_NOTES = [
+  "In Feng Shui the entry door is called the “mouth of chi” — where energy, like people, comes in. We look closely at your first step inside.",
+  "The “command position” means seeing the door from your bed or desk without being in line with it — usually diagonally across the room.",
+  "Chi (pronounced “chee”) is pictured as a slow stream: it should meander through a room, not rush straight through or get stuck.",
+  "Yin is soft, quiet and dim; yang is bright and lively. Bedrooms lean yin, while living spaces can hold more yang.",
+  "The five elements — Wood, Fire, Earth, Metal and Water — show up as materials, colors and shapes: timber, warm light, ceramics, metal, glass.",
+  "Clearing clutter is traditionally the first step, before anything new is added to a room.",
+];
+
+function useRotating(count: number, ms: number, running: boolean) {
+  const [index, setIndex] = React.useState(0);
+  React.useEffect(() => {
+    if (!running) return;
+    const id = setInterval(() => setIndex((i) => (i + 1) % count), ms);
+    return () => clearInterval(id);
+  }, [count, ms, running]);
+  return index;
+}
 
 function useElapsed(running: boolean) {
   const [seconds, setSeconds] = React.useState(0);
@@ -51,12 +71,13 @@ export function ProcessingStep({
   const rendering = stages.render === "active";
   const running = !error;
   const elapsed = useElapsed(running);
+  const note = useRotating(WAIT_NOTES.length, 8000, running);
   const heading = error ? "We hit a snag" : rendering ? "Rendering your optimized room…" : "Analyzing your room…";
 
   return (
     <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
       <div className="lg:col-span-7">
-        <figure className="relative overflow-hidden rounded-md bg-muted" style={{ aspectRatio: aspect }}>
+        <figure className="relative overflow-hidden rounded-[22px] bg-muted shadow-[0_30px_80px_-40px_rgba(31,58,45,0.45)]" style={{ aspectRatio: aspect }}>
           {/* eslint-disable-next-line @next/next/no-img-element -- local object URL preview */}
           <img
             src={previewUrl}
@@ -65,8 +86,8 @@ export function ProcessingStep({
           />
           {running && (
             <>
-              <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[size:48px_48px]" />
-              <div className="animate-scan absolute inset-x-0 top-0 h-[12%] bg-gradient-to-b from-transparent via-white/25 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-br from-pine/25 via-transparent to-water/20" />
+              <Ripples tone="light" className="left-1/2 top-1/2 aspect-square w-[58%] -translate-x-1/2 -translate-y-1/2" />
             </>
           )}
         </figure>
@@ -125,6 +146,12 @@ export function ProcessingStep({
               })}
             </ol>
             {summary && <p className="animate-fade-up mt-8 border-t border-border pt-4 text-sm text-muted-foreground">{summary}</p>}
+            <div className="mt-8 rounded-2xl bg-mist/60 p-5">
+              <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.16em] text-water">While you wait</p>
+              <p key={note} className="animate-fade-up font-display text-[1.3rem] leading-snug text-foreground/85">
+                {WAIT_NOTES[note]}
+              </p>
+            </div>
             <Button variant="ghost" size="sm" onClick={onCancel} className="mt-8 -ml-3 text-muted-foreground">
               Cancel
             </Button>
